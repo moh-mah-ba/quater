@@ -4,6 +4,8 @@ import {
   PROPERTY_ADD_FAIL,
   PROPERTY_LIST_SUCCESS,
   PROPERTY_LIST_FAIL,
+  PROPERTY_DETAILS_SUCCESS,
+  PROPERTY_DETAILS_FAIL,
 } from "../constants/propertyconstants";
 
 
@@ -15,6 +17,21 @@ export const listProperty = (itemsPerPage, pageNumber) => async (dispatch) => {
     dispatch({ type: PROPERTY_LIST_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: PROPERTY_LIST_FAIL, payload: error.message });
+  }
+};
+
+export const detailsProperty = (propertyId) => async (dispatch) => {
+  try {
+    const { data } = await api.get(`/property/${propertyId}`);
+    dispatch({ type: PROPERTY_DETAILS_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: PROPERTY_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
   }
 };
 

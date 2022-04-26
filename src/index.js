@@ -51,10 +51,13 @@ class Root extends Component {
             <Route path="/" element={<HomeV3 />}  />
             <Route path="properties" element={<Properties />} />
             <Route path="add-listing" element={<AddListing />} />
-            <Route path="propertie-details" element={<PropertieDetails />} />
+            <Route path="property/propertie-details/:id" element={<PropertieDetails />} />
             <Route path="login" element={<Login />} />
             <Route path="contact" element={< Contact/>} />
+            {/* <Route path="property/propertie-details/:id" element={<P />} /> */}
             <Route path="*" element={< Error />} />
+
+            
             {/* <Route path="/about" component={About} />
                         <Route path="/service" component={Service} />
                         <Route path="/service-details" component={ ServiceDetails } />

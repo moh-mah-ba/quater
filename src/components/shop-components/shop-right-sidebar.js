@@ -1,11 +1,12 @@
-import React, {useState , useEffect} from "react";
-import { Link , useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Sidebar from "./shop-sidebar";
-import { useDispatch , useSelector } from "react-redux";
+import PropertyDetails from "./propery-details";
+import { useDispatch, useSelector } from "react-redux";
 import { listProperty } from "../../redux/actions/propertyAction";
+import { detailsProperty } from "../../redux/actions/propertyAction";
 
 const ShopGridV1 = () => {
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -13,10 +14,14 @@ const ShopGridV1 = () => {
   const [itemsPerPage, setItemsPerPage] = useState(6);
 
   const propertyList = useSelector((state) => state.propertyReducer);
-  const {  error, properties, currentItemsPerPage, totalPages } =
-  propertyList;
+  const { error, properties, currentItemsPerPage, totalPages } = propertyList;
+  
+  // const [propertyId , setPropertyId] = useState("");
 
-  // console.log("properties" , properties)
+  // console.log("propertyId" , propertyId)
+  // console.log("propertyId" , propertyId)
+
+  // dispatch(detailsProperty(propertyId));
 
   useEffect(() => {
     dispatch(listProperty(itemsPerPage, pageNumber));
@@ -33,7 +38,6 @@ const ShopGridV1 = () => {
     navigate(`/?page=${totalPages}&itemsPerPage=${currentItemsPerPage}`);
   };
 
-  
   const handleItemsPerPage = (e) => {
     setItemsPerPage(e);
     setPageNumber(1);
@@ -63,22 +67,64 @@ const ShopGridV1 = () => {
                       </div>
                     </div>
                   </li>
-                  <li className="d-none">
-                    <div className="showing-product-number text-right">
-                      <span>Showing 1–12 of 18 results</span>
+                  <li>
+                    <div className="dropdown">
+                      <button
+                        className="btn border dropdown-toggle"
+                        type="button" id="dropdownMenu2"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        Per Page: {itemsPerPage} <span className="pt-3"></span>
+                      </button>
+                      <ul
+                        className="dropdown-menu"
+                        aria-labelledby="dropdownMenu2"
+                      >
+                        <li>
+                          <Link
+                            className="dropdown-item"
+                            to={`/properties/?page=1&itemsPerPage=6`}
+                            onClick={(e) => handleItemsPerPage(6)}  
+                          >
+                            Per Page: 6
+                          </Link>
+                        </li>
+                        {(properties || "").length >= 6 ? (
+                          <li>
+                            <Link
+                              className="dropdown-item"
+                              to={`/properties/?page=1&itemsPerPage=12`}
+                              onClick={(e) => handleItemsPerPage(12)}
+                            >
+                              Per Page: 12
+                            </Link>
+                          </li>
+                        ) : (
+                          ""
+                        )}
+                        {(properties || "").length >= 12 ? (
+                          <li>
+                            <Link
+                              className="dropdown-item"
+                              to={`/properties/?page=1&itemsPerPage=50`}
+                              onClick={(e) => handleItemsPerPage(50)}
+                            >
+                              Per Page: 50
+                            </Link>
+                          </li>
+                        ) : (
+                          ""
+                        )}
+                      </ul>
                     </div>
                   </li>
-                  <li>
-                  <div className="short-by text-center">
-                    <select className="nice-select">
-                      <Link to={`/properties/?page=1&itemsPerPage=6`}>
-                     <option>to one</option></Link>
-                      <Link to={`/properties/?page=1&itemsPerPage=12`}>
-                     <option>to two</option></Link>
-                      <Link to={`/properties/?page=1&itemsPerPage=24`}>
-                     <option>to three</option></Link>
-                    </select>
-                  </div>
+                  <li className="d-inline-block">
+                    <div className="showing-product-number text-right">
+                      <span>
+                        Showing 1–{itemsPerPage} of {properties && properties?.length} results
+                      </span>
+                    </div>
                   </li>
                 </ul>
               </div>
@@ -99,93 +145,39 @@ const ShopGridV1 = () => {
 									</div>
 									</div> */}
                       {/* ltn__product-item */}
-                      {properties.map((property) => {
-                      return(
-                      <div key={property._id} className="col-xl-6 col-sm-6 col-12">
-                        <div className="ltn__product-item ltn__product-item-4 ltn__product-item-5 text-center---">
-                          <div className="product-img go-top">
-                            <Link to={`/propertie-details/${property._id}`}>
-                              <img
-                                src={property.images[0]}
-                                alt={property.title}
-                              />
-                            </Link>
-                          </div>
-                          <div className="product-info">
-                            <div className="product-badge">
-                              <ul>
-                                <li className="sale-badg">{property.saleType}</li>
-                              </ul>
-                            </div>
-                            <h2 className="product-title go-top">
-                            <Link to={`/propertie-details/${property._id}`}>
-                                {property.title}
-                              </Link>
-                            </h2>
-                            <div className="product-img-location go-top">
-                              <ul>
-                                <li>
-                                  <Link to="/contact">
-                                    <i className="flaticon-pin" /> {property.city}
-                                    {property.address}, {property.neighborhood}
-                                  </Link>
-                                </li>
-                              </ul>
-                            </div>
-                            <ul className="ltn__list-item-2--- ltn__list-item-2-before--- ltn__plot-brief">
-                              <li>
-                                <span>{property.bedrooms} </span>
-                                Bed
-                              </li>
-                              <li>
-                                <span>{property.bathrooms} </span>
-                                Bath
-                              </li>
-                              <li>
-                                <span>{property.size} </span>
-                                Meter
-                              </li>
-                            </ul>
-                          </div>
-                          <div className="product-info-bottom">
-                            <div className="product-price">
-                              <span>
-                                $ {property.price}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      )
-                  })}
-                  </div>
+                      {properties?.map((property) => {
+                        return (
+                          <PropertyDetails key={property._id} property={property} />
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               </div>
               <div className="ltn__pagination-area text-center">
                 <div className="ltn__pagination">
                   <ul>
-                    <li>
+                    <li onClick={handleBackButton}>
                       <Link to="#">
                         <i className="fas fa-angle-double-left" />
                       </Link>
                     </li>
-                    <li>
-                      <Link to="#">1</Link>
-                    </li>
-                    <li className="active">
-                      <Link to="#">2</Link>
-                    </li>
-                    <li>
-                      <Link to="#">3</Link>
-                    </li>
-                    <li>
-                      <Link to="#">...</Link>
-                    </li>
-                    <li>
-                      <Link to="#">10</Link>
-                    </li>
-                    <li>
+
+                    {pages.map((pageIndex) => (
+                      <li
+                        key={pageIndex}
+                        onClick={() => setPageNumber(pageIndex + 1)}
+                      >
+                        <Link
+                          to={`/?page=${
+                            pageIndex + 1
+                          }&itemsPerPage=${currentItemsPerPage}`}
+                        >
+                          {pageIndex + 1}
+                        </Link>
+                      </li>
+                    ))}
+                    <li onClick={handleNextButton}>
                       <Link to="#">
                         <i className="fas fa-angle-double-right" />
                       </Link>

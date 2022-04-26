@@ -1,7 +1,7 @@
 import { createStore, combineReducers, compose , applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import {userSigninReducer} from "./reducsers/userReducers";
-import { propertyReducer , addPropertyReducers} from "./reducsers/propertyReducers";
+import { propertyReducer , addPropertyReducers, propertyDetailsReducer} from "./reducsers/propertyReducers";
 
 const initialState = {
     userSigninReducer: {
@@ -15,6 +15,7 @@ const reducer = combineReducers({
     userSigninReducer: userSigninReducer,
     addPropertyReducers: addPropertyReducers,
     propertyReducer: propertyReducer,
+    propertyDetailsReducer: propertyDetailsReducer,
 });
 
 const enhancer = (process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null) || compose;

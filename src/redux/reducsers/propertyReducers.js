@@ -3,6 +3,8 @@ import {
   PROPERTY_ADD_FAIL,
   PROPERTY_LIST_SUCCESS,
   PROPERTY_LIST_FAIL,
+  PROPERTY_DETAILS_SUCCESS,
+  PROPERTY_DETAILS_FAIL,
 } from "../constants/propertyconstants";
 
 export const propertyReducer = (
@@ -25,6 +27,19 @@ export const propertyReducer = (
         totalPages: action.payload.totalPages,
       };
     case PROPERTY_LIST_FAIL:
+      return { error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const propertyDetailsReducer = (state = { property: {} }, action) => {
+  // console.log("state", state);
+  // console.log("action", action);
+  switch (action.type) {
+    case PROPERTY_DETAILS_SUCCESS:
+      return { property: action.payload };
+    case PROPERTY_DETAILS_FAIL:
       return { error: action.payload };
     default:
       return state;

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch , useSelector} from "react-redux";
 import axios from "axios";
 import { addpropertyAction } from "../../redux/actions/propertyAction";
+import { useNavigate } from "react-router-dom";
 
 
 const AddListing = () => {
@@ -29,6 +30,8 @@ const AddListing = () => {
   const [yearBuilt, setYearBuilt] = useState();
   const [available, setAvailable] = useState();
 
+
+  const navigate = useNavigate();
 
   const [selectedImages, setSelectedImages] = useState([]);
   const [uploded , setUploded] = useState(false);
@@ -109,6 +112,8 @@ const AddListing = () => {
     );
     e.target.reset();
     setSelectedImages("")
+    
+    navigate("/")
   };
 
   const addProperty = useSelector((state) => state.addPropertyReducers);

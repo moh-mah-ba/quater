@@ -1,10 +1,33 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, {useEffect , useState} from "react";
+import { Link , useNavigate , useParams } from "react-router-dom";
+import { useDispatch , useSelector } from "react-redux";
 import FeaturedItem from "../section-components/featured-item-v1";
+import { detailsProperty } from "../../redux/actions/propertyAction"; 
 // import FeaturedItem from './section-components/featured-item-v1';
 
-const ShopDetails = () => {
+const ShopDetails = (props) => {
   let publicUrl = process.env.PUBLIC_URL + "/";
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const propertyId = id;
+
+
+  
+const propertyDetail = useSelector((state) => state.propertyDetailsReducer);
+const {property , error} = propertyDetail;
+
+// const immaage = property.images?.map((item) => {
+//   const value = new Array(item)
+//   console.log("value" , value)
+// });
+const immaage = Array.of(property.images)
+// const value = immaage[1];
+console.log("immaage" , immaage.at(1))
+
+useEffect(() => {
+dispatch(detailsProperty(propertyId))
+}, [dispatch, propertyId])
+
   return (
     <div className="ltn__shop-details-area pb-10">
       <div className="container">
@@ -18,57 +41,42 @@ const ShopDetails = () => {
                   </li>
                   <li className="ltn__blog-category">
                     <Link className="bg-orange" to="#">
-                      For Rent
+                      For {property.saleType}
                     </Link>
                   </li>
                 </ul>
               </div>
-              <h1>Diamond Manor Apartment</h1>
+              <h1>{property.title}</h1>
               <label>
                 <span className="ltn__secondary-color">
                   <i className="flaticon-pin" />
                 </span>{" "}
-                Belmont Gardens, Chicago
+                {property.city} {property.address}, {property.neighborhood}
               </label>
               <h4 className="title-2">Description</h4>
-              <p>
-                Massa tempor nec feugiat nisl pretium. Egestas fringilla
-                phasellus faucibus scelerisque eleifend donec Porta nibh
-                venenatis cras sed felis eget velit aliquet. Neque volutpat ac
-                tincidunt vitae semper quis lectus. Turpis in eu mi bibendum
-                neque egestas congue quisque. Sed elementum tempus egestas sed
-                sed risus pretium quam. Dignissim sodales ut eu sem. Nibh mauris
-                cursus mattis molestee iaculis at erat pellentesque. Id interdum
-                velit laoreet id donec ultrices tincidunt.
-              </p>
-              <p>
-                To the left is the modern kitchen with central island, leading
-                through to the unique breakfast family room which feature glass
-                walls and doors out onto the garden and access to the separate
-                utility room.
-              </p>
+              <p>{property.description}</p>
               <h4 className="title-2">Property Detail</h4>
               <div className="property-detail-info-list section-bg-1 clearfix mb-60">
                 <ul>
                   <li>
-                    <label>Rooms:</label> <span>7</span>
+                    <label>Rooms:</label> <span>{property.rooms}</span>
                   </li>
                   <li>
-                    <label>Baths:</label> <span>2</span>
+                    <label>Baths:</label> <span>{property.bathrooms}</span>
                   </li>
                   <li>
-                    <label>Year built:</label> <span>1992</span>
+                    <label>Year built:</label> <span>{property.yearBuilt}</span>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <label>Beds:</label> <span>7</span>
+                    <label>Beds:</label> <span>{property.bedrooms}</span>
                   </li>
                   <li>
-                    <label>Price:</label> <span>2</span>
+                    <label>Price:</label> <span>{property.price}</span>
                   </li>
                   <li>
-                    <label>Property Status:</label> <span>For Sale</span>
+                    <label>Property Status:</label> <span>For {property.saleType}</span>
                   </li>
                 </ul>
               </div>
