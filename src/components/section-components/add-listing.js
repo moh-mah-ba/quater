@@ -464,9 +464,9 @@ const AddListing = () => {
                     <div className="input-item input-item-name ltn__custom-icon border p-3">
                       <label>Year Built (*numeric):</label>
                       <input
-                        type="date"
-                        id="Year Built (*numeric)"
-                        name="Year Built (*numeric)"
+                        type="text"
+                        id="Year Built (*only numbers)"
+                        name="Year Built (*only numbers)"
                         required
                         onChange={(e) => setYearBuilt(e.target.value)}
                       />
@@ -476,9 +476,9 @@ const AddListing = () => {
                     <div className="input-item input-item-name ltn__custom-icon border p-3">
                       <label>Available from (*date):</label>
                       <input
-                        type="date"
-                        id="Available from (*date)"
-                        name="Available from (*date)"
+                        type="text"
+                        id="Available from (*only numbers)"
+                        name="Available from (*only numbers)"
                         required
                         onChange={(e) => setAvailable(e.target.value)}
                       />

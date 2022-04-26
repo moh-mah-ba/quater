@@ -14,15 +14,8 @@ const ShopDetails = (props) => {
 
   
 const propertyDetail = useSelector((state) => state.propertyDetailsReducer);
-const {property , error} = propertyDetail;
+const {property , images , error} = propertyDetail;
 
-// const immaage = property.images?.map((item) => {
-//   const value = new Array(item)
-//   console.log("value" , value)
-// });
-const immaage = Array.of(property.images)
-// const value = immaage[1];
-console.log("immaage" , immaage.at(1))
 
 useEffect(() => {
 dispatch(detailsProperty(propertyId))
@@ -85,36 +78,50 @@ dispatch(detailsProperty(propertyId))
                 <div className="row">
                   <div className="col-md-6">
                     <a
-                      href={publicUrl + "assets/img/others/14.jpg"}
+                      href={images[0]}
                       data-rel="lightcase:myCollection"
                     >
                       <img
                         className="mb-30"
-                        src={publicUrl + "assets/img/others/14.jpg"}
+                        src={images[0]}
                         alt="Image"
                       />
                     </a>
                     <a
-                      href={publicUrl + "assets/img/others/15.jpg"}
+                      href={images[1]}
                       data-rel="lightcase:myCollection"
                     >
-                      <img
+                       <img
                         className="mb-30"
-                        src={publicUrl + "assets/img/others/15.jpg"}
+                        src={images[1]}
                         alt="Image"
                       />
                     </a>
                   </div>
                   <div className="col-md-6">
                     <a
-                      href={publicUrl + "assets/img/others/16.jpg"}
+                      href={images[2]}
                       data-rel="lightcase:myCollection"
                     >
-                      <img
+                       <img
                         className="mb-30"
-                        src={publicUrl + "assets/img/others/16.jpg"}
+                        src={images[2]}
                         alt="Image"
                       />
+                    </a>
+                  </div>
+                  <div className="col-md-6">
+                    <a
+                      href={images[3]}
+                      data-rel="lightcase:myCollection"
+                    >
+                    </a>
+                  </div>
+                  <div className="col-md-6">
+                    <a
+                      href={images[4]}
+                      data-rel="lightcase:myCollection"
+                    >
                     </a>
                   </div>
                 </div>
@@ -123,11 +130,11 @@ dispatch(detailsProperty(propertyId))
               <h4 className="title-2">Property Video</h4>
               <div
                 className="ltn__video-bg-img ltn__video-popup-height-500 bg-overlay-black-50 bg-image mb-60"
-                data-bs-bg={publicUrl + "assets/img/others/5.jpg"}
+                data-bs-bg={images[1]}
               >
                 <a
                   className="ltn__video-icon-2 ltn__video-icon-2-border---"
-                  href="https://www.youtube.com/embed/eWUxqVFBq74?autoplay=1&showinfo=0"
+                  href={`${property.video}?autoplay=1&showinfo=0`}
                   data-rel="lightcase:myCollection"
                 >
                   <i className="fa fa-play" />

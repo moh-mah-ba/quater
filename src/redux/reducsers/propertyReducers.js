@@ -10,6 +10,7 @@ import {
 export const propertyReducer = (
   state = {
     properties: [],
+    images: [],
     allProducts: [],
     currentPage: [],
     currentItemsPerPage: [],
@@ -21,8 +22,8 @@ export const propertyReducer = (
   switch (action.type) {
     case PROPERTY_LIST_SUCCESS:
       return {
-        loading: false,
         properties: action.payload.properties,
+        images: action.payload.images,
         currentItemsPerPage: action.payload.currentItemsPerPage,
         totalPages: action.payload.totalPages,
       };
@@ -33,12 +34,12 @@ export const propertyReducer = (
   }
 };
 
-export const propertyDetailsReducer = (state = { property: {} }, action) => {
+export const propertyDetailsReducer = (state = { property: {}, images: [] }, action) => {
   // console.log("state", state);
   // console.log("action", action);
   switch (action.type) {
     case PROPERTY_DETAILS_SUCCESS:
-      return { property: action.payload };
+      return { property: action.payload , images: action.payload.images};
     case PROPERTY_DETAILS_FAIL:
       return { error: action.payload };
     default:

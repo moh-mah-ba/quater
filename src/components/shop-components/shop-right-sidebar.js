@@ -4,7 +4,6 @@ import Sidebar from "./shop-sidebar";
 import PropertyDetails from "./propery-details";
 import { useDispatch, useSelector } from "react-redux";
 import { listProperty } from "../../redux/actions/propertyAction";
-import { detailsProperty } from "../../redux/actions/propertyAction";
 
 const ShopGridV1 = () => {
   const dispatch = useDispatch();
@@ -15,13 +14,6 @@ const ShopGridV1 = () => {
 
   const propertyList = useSelector((state) => state.propertyReducer);
   const { error, properties, currentItemsPerPage, totalPages } = propertyList;
-  
-  // const [propertyId , setPropertyId] = useState("");
-
-  // console.log("propertyId" , propertyId)
-  // console.log("propertyId" , propertyId)
-
-  // dispatch(detailsProperty(propertyId));
 
   useEffect(() => {
     dispatch(listProperty(itemsPerPage, pageNumber));
