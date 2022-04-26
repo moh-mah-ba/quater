@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { listProperty } from "../../redux/actions/propertyAction";
 
@@ -7,6 +7,7 @@ const FeaturedItemV1 = () => {
   let publicUrl = process.env.PUBLIC_URL + "/";
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const propertyList = useSelector((state) => state.propertyReducer);
   const { properties, images , currentItemsPerPage, totalPages } = propertyList;
@@ -20,6 +21,11 @@ const FeaturedItemV1 = () => {
   const items = properties.slice(0, size);
 
   console.log("properties", items);
+
+//   const handleNavigate =(e) => {
+// 	  navigate(`property/propertie-details/${e}`)
+//   }
+
   return (
     <div>
       <div className="ltn__product-slider-area ltn__product-gutter pt-115 pb-90">
@@ -38,10 +44,10 @@ const FeaturedItemV1 = () => {
             {/* ltn__product-item */}
             {items?.map((item) => {
               return (
-                <div className="col-lg-12">
+                <div key={item.index} className="col-lg-12">
                   <div className="ltn__product-item ltn__product-item-4 text-center---">
                     <div className="product-img go-top">
-                      <Link to="/product-details">
+                      <Link to={`property/propertie-details/${item._id}`}>
                         <img
                           src={publicUrl + "assets/img/product-3/1.jpg"}
                           alt="#"
@@ -72,8 +78,8 @@ const FeaturedItemV1 = () => {
                         </span>
                       </div>
                       <h2 className="product-title go-top">
-                        <Link to="/product-details">
-                          New Apartment Nice View
+                        <Link to={`property/propertie-details/${item._id}`}>
+                          {item.title}
                         </Link>
                       </h2>
                       <div className="product-description">
@@ -85,22 +91,22 @@ const FeaturedItemV1 = () => {
                       <ul className="ltn__list-item-2 ltn__list-item-2-before">
                         <li>
                           <span>
-                            3 <i className="flaticon-bed" />
+                            {item.bedrooms} <i className="flaticon-bed" />
                           </span>
                           Bedrooms
                         </li>
                         <li>
                           <span>
-                            2 <i className="flaticon-clean" />
+                            {item.bathrooms} <i className="flaticon-clean" />
                           </span>
                           Bathrooms
                         </li>
                         <li>
                           <span>
-                            3450{" "}
+                            {item.size}{" "}
                             <i className="flaticon-square-shape-design-interface-tool-symbol" />
                           </span>
-                          square Ft
+                          Meter
                         </li>
                       </ul>
                     </div>

@@ -130,7 +130,7 @@ dispatch(detailsProperty(propertyId))
               <h4 className="title-2">Property Video</h4>
               <div
                 className="ltn__video-bg-img ltn__video-popup-height-500 bg-overlay-black-50 bg-image mb-60"
-                data-bs-bg={images[1]}
+                data-bs-bg={publicUrl+"assets/img/bg/19.jpg"}
               >
                 <a
                   className="ltn__video-icon-2 ltn__video-icon-2-border---"
@@ -140,11 +140,11 @@ dispatch(detailsProperty(propertyId))
                   <i className="fa fa-play" />
                 </a>
               </div>
-              <div className="ltn__shop-details-tab-content-inner--- ltn__shop-details-tab-inner-2 ltn__product-details-review-inner mb-60"></div>
+              {/* <div className="ltn__shop-details-tab-content-inner--- ltn__shop-details-tab-inner-2 ltn__product-details-review-inner mb-60"></div>
               <div className="row">
                 <FeaturedItem />
-              </div>
-            </div>
+              </div>*/}
+            </div> 
           </div>
         </div>
       </div>
