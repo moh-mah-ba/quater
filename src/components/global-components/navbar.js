@@ -83,7 +83,7 @@ const Navbar = () => {
                               <Link to="/add-listing">Add Listing</Link>
                             </li>
                           ) : (
-                            ""
+                            <></>
                           )}
                         </ul>
                       </div>
@@ -110,7 +110,7 @@ const Navbar = () => {
                     </div>
                   </div>
                 ) : (
-                  ""
+                  <></>
                 )}
               </div>
               <div className="ltn__header-options ltn__header-options-2 mb-sm-20">

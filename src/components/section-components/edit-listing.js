@@ -1,98 +1,112 @@
-import React, { useState } from "react";
-import { useDispatch , useSelector} from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { addpropertyAction } from "../../redux/actions/propertyAction";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { detailsProperty , editProperty} from "../../redux/actions/propertyAction";
 
+const EditListing = (props) => {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const propertyId = id;
 
-
-const AddListing = () => {
+  const propertyDetail = useSelector((state) => state.propertyDetailsReducer);
+  const { property,  images,  error } = propertyDetail;
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
-  const [typeOfProperty, setTypeOfProperty] = useState("");
+  const [typeOfProperty, setTypeOfProperty] = useState('');
   const [saleType, setSaleType] = useState("");
-  const [saleStatus, setSaleStatus] = useState("");
-  const [images, setImages] = useState([]);
+  const [saleStatus, setSaleStatus] = useState('');
+  const [imagesList, setImagesList] = useState([""]);
   const [video, setVideo] = useState("");
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
   const [neighborhood, setNeighborhood] = useState("");
-  const [size, setSize] = useState("");
-  const [rooms, setRooms] = useState("");
-  const [bedrooms, setBedrooms] = useState("");
-  const [bathrooms, setBathrooms] = useState("");
+  const [size, setSize] = useState(0);
+  const [rooms, setRooms] = useState(0);
+  const [bedrooms, setBedrooms] = useState(0);
+  const [bathrooms, setBathrooms] = useState(0);
   const [garages, setGarages] = useState("");
   const [basement, setBasement] = useState("");
   const [extraDetails, setExtraDetails] = useState("");
   const [roofing, setRoofing] = useState("");
   const [floorNumber, setFloorNumber] = useState(0);
-  const [yearBuilt, setYearBuilt] = useState();
-  const [available, setAvailable] = useState();
-
-
-  const navigate = useNavigate();
-
-  const [selectedImages, setSelectedImages] = useState([]);
-  const [uploded , setUploded] = useState(false);
-
-  const onSelectFile = (event) => {
-    const selectedFiles = event.target.files;
-    const selectedFilesArray = Array.from(selectedFiles);
-    
-    const imagesArray = selectedFilesArray.map((file) => {
-      return URL.createObjectURL(file);
-    });
-    
-    setSelectedImages((previousImages) => previousImages.concat(imagesArray));
-    
-  };
+  const [yearBuilt, setYearBuilt] = useState("");
+  const [available, setAvailable] = useState("");
   
+  useEffect(() => {
+    dispatch(detailsProperty(propertyId));
+  }, [dispatch, propertyId]);
 
 
-  const uploadImage = async () => {
+   useEffect(() => {
+   
+    setTitle(property.title);
+    setDescription(property.description);
+    setPrice(property.price);
+    setTypeOfProperty(property.typeOfProperty);
+    setSaleType(property.saleType);
+    setSaleStatus(property.saleStatus);
+    setImagesList(images);
+    setVideo(property.video);
+    setCity(property.city);
+    setAddress(property.address);
+    setNeighborhood(property.neighborhood);
+    setSize(property.size);
+    setRooms(property.rooms);
+    setBedrooms(property.bedrooms);
+    setBathrooms(property.bathrooms);
+    setGarages(property.garages);
+    setYearBuilt(property.yearBuilt);
+    setAvailable(property.available);
+    setBasement(property.basement);
+    setExtraDetails(property.extraDetails);
+    setRoofing(property.roofing);
+    setFloorNumber(property.floorNumber);
+  }, [
+    property.title,
+    property.description,
+    property.price,
+    property.typeOfProperty,
+    property.saleType,
+    property.saleStatus,
+    property.images,
+    property.video,
+    property.city,
+    property.address,
+    property.neighborhood,
+    property.size,
+    property.rooms,
+    property.bedrooms,
+    property.bathrooms,
+    property.garages,
+    property.yearBuilt,
+    property.available,
+    property.basement,
+    property.extraDetails,
+    property.roofing,
+    property.floorNumber,
+  ])
+
+  
+  
+  
+  const navigate = useNavigate();
     
-    for (let i = 0; i < selectedImages.length; i++) {
-      
-      let file = selectedImages[i];
-      axios({
-        method: "get",
-        url: file,
-        responseType: "blob",
-      }).then((response) => {
-        let reader = new FileReader();
-        reader.readAsDataURL(response.data);
-        reader.onloadend = () => {
-          let base64data = reader.result;
-          const formData = new FormData();
-          formData.append("file", base64data);
-          formData.append("api_key", 649836794481793);
-          formData.append("upload_preset", "hlavypdy");
-          axios.post("https://api.cloudinary.com/v1_1/dembs0jhl/image/upload" , formData)
-          .then(async (res) => {
-            const imageURL = res;
-            setImages(old => [...old , imageURL.data.secure_url])            
-          })
-          }
-        })
-      }
-      setUploded(true)
-    };
-
-  const dispatch = useDispatch();
 
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(
-      addpropertyAction(
+      editProperty(
+        propertyId,
         title,
         description,
         price,
         typeOfProperty,
         saleType,
         saleStatus,
-        images,
+        imagesList,
         video,
         city,
         address,
@@ -111,13 +125,10 @@ const AddListing = () => {
       )
     );
     e.target.reset();
-    setSelectedImages("")
-    
-    navigate("/properties")
-  };
 
-  const addProperty = useSelector((state) => state.addPropertyReducers);
-  const {error} = addProperty;
+    
+    navigate(`/properties`)
+  };
 
   return (
     <div className="ltn__appointment-area pb-120">
@@ -140,6 +151,7 @@ const AddListing = () => {
                       <input
                         type="text"
                         name="ltn__name"
+                        value={title}
                         placeholder="*Title (mandatory)"
                         required
                         onChange={(e) => setTitle(e.target.value)}
@@ -149,7 +161,7 @@ const AddListing = () => {
                       <textarea
                         name="ltn__message"
                         placeholder="Description"
-                        defaultValue={""}
+                        value={description}
                         required
                         onChange={(e) => setDescription(e.target.value)}
                       />
@@ -164,6 +176,7 @@ const AddListing = () => {
                         type="text"
                         name="ltn__name"
                         placeholder="Price in $ (only numbers)"
+                        value={price}
                         required
                         onChange={(e) => setPrice(e.target.value)}
                       />
@@ -175,8 +188,8 @@ const AddListing = () => {
                   <div className="col-lg-4 col-md-6">
                     <div className="input-item">
                       <select
-                        value={typeOfProperty}
                         className="nice-select"
+                        value={typeOfProperty}
                         required
                         onChange={(e) => setTypeOfProperty(e.target.value)}
                       >
@@ -196,8 +209,8 @@ const AddListing = () => {
                   <div className="col-lg-4 col-md-6">
                     <div className="input-item">
                       <select
-                        value={saleType}
                         className="nice-select"
+                        value={saleType}
                         required
                         onChange={(e) => setSaleType(e.target.value)}
                       >
@@ -210,8 +223,8 @@ const AddListing = () => {
                   <div className="col-lg-4 col-md-6">
                     <div className="input-item">
                       <select
-                        value={saleStatus}
                         className="nice-select"
+                        value={saleStatus}
                         required
                         onChange={(e) => setSaleStatus(e.target.value)}
                       >
@@ -228,74 +241,25 @@ const AddListing = () => {
                 <h2>2. Media</h2>
                 <h6>Listing Media</h6>
                 <div className="row">
-                  <div className="col-md-6 mb-3">
-                    <div className="input-item">
-                      <input
-                        type="file"
-                        id="myFile"
-                        name="filename"
-                        className="btn theme-btn-3 mb-10"
-                        onChange={onSelectFile}
-                        multiple
-                        accept="image/*"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="col-3">
-                  {selectedImages.length > 0 &&
-                      (selectedImages.length > 5 ? (
-                        <p className="error">
-                          You can't upload more than 5 images! <br />
-                          <span>
-                            please delete <b> {selectedImages.length - 5} </b> of them{" "}
-                          </span>
-                        </p>
-                      ) : (
-                        <button
-                        type="button" className={`btn ${uploded ? "btn-success" : "btn-primary"}`}
-                          onClick={uploadImage}
-                          disabled={uploded}
-                        >
-                          UPLOAD {selectedImages.length} IMAGE
-                          {selectedImages.length === 1 ? "" : "S"}
-                        </button>
-                      ))}
-                  </div>
                   <div className="col-12">
-                    {selectedImages && selectedImages.map((image, index) => {
-                      return(
-                        <div  key={index} className="col-2 border m-3 d-inline-block">
-                           <img
-                              src={image}
-                              alt="uploud"
-                             
-                            />
+                    {images &&
+                      images.map((image, index) => {
+                        return (
+                          <div
+                            key={index}
+                            className="col-3 border m-3 d-inline-block"
+                          >
+                            <img src={image} alt="uploud" />
                             <div className="d-flex justify-content-between">
                               <p>{index + 1}</p>
-                              <button type="button" className={`btn-danger ${uploded? "d-none" : "d-inline-block"}`}
-                                onClick={() =>
-                                  setSelectedImages(selectedImages.filter((e) => e !== image))
-                                }
-                              >
-                                delete image
-                              </button>
                             </div>
-                        </div>
-                      )
-                    })}
+                          </div>
+                        );
+                      })}
                   </div>
                 </div>
                 <br />
                 <p>
-                  <small>
-                    * At least 1 image is required for a valid
-                    submission.Minimum size is 500/500px.
-                  </small>
-                  <br />
-                  <small>* up to 5 images</small>
-                  <br />
-                  <small>* Images might take longer to be processed.</small>
                 </p>
                 <h6>Video Option</h6>
                 <div className="row">
@@ -305,6 +269,7 @@ const AddListing = () => {
                         type="text"
                         name="ltn__name"
                         placeholder="youtube video link"
+                        value={video}
                         onChange={(e) => setVideo(e.target.value)}
                       />
                     </div>
@@ -318,7 +283,8 @@ const AddListing = () => {
                       <input
                         type="text"
                         name="ltn__name"
-                        placeholder="City"
+                        placeholder="*City"
+                        value={city}
                         required
                         onChange={(e) => setCity(e.target.value)}
                       />
@@ -330,6 +296,7 @@ const AddListing = () => {
                         type="text"
                         name="ltn__name"
                         placeholder="*Address"
+                        value={address}
                         required
                         onChange={(e) => setAddress(e.target.value)}
                       />
@@ -341,6 +308,7 @@ const AddListing = () => {
                         type="text"
                         name="ltn__name"
                         placeholder="Neighborhood"
+                        value={neighborhood}
                         required
                         onChange={(e) => setNeighborhood(e.target.value)}
                       />
@@ -356,6 +324,7 @@ const AddListing = () => {
                         type="text"
                         name="ltn__name"
                         placeholder="Size in meter (*only numbers)"
+                        value={size}
                         required
                         onChange={(e) => setSize(e.target.value)}
                       />
@@ -367,6 +336,7 @@ const AddListing = () => {
                         type="text"
                         name="ltn__name"
                         placeholder="Rooms (*only numbers)"
+                        value={rooms}
                         required
                         onChange={(e) => setRooms(e.target.value)}
                       />
@@ -378,6 +348,7 @@ const AddListing = () => {
                         type="text"
                         name="ltn__name"
                         placeholder="Bedrooms (*only numbers)"
+                        value={bedrooms}
                         required
                         onChange={(e) => setBedrooms(e.target.value)}
                       />
@@ -389,6 +360,7 @@ const AddListing = () => {
                         type="text"
                         name="ltn__name"
                         placeholder="Bathrooms (*only numbers)"
+                        value={bathrooms}
                         required
                         onChange={(e) => setBathrooms(e.target.value)}
                       />
@@ -400,6 +372,7 @@ const AddListing = () => {
                         type="text"
                         name="ltn__name"
                         placeholder="Garages (*text)"
+                        value={garages}
                         required
                         onChange={(e) => setGarages(e.target.value)}
                       />
@@ -411,6 +384,7 @@ const AddListing = () => {
                         type="text"
                         name="ltn__name"
                         placeholder="Basement (*text)"
+                        value={basement}
                         required
                         onChange={(e) => setBasement(e.target.value)}
                       />
@@ -422,6 +396,7 @@ const AddListing = () => {
                         type="text"
                         name="ltn__name"
                         placeholder="Extra Details (*text)"
+                        value={extraDetails}
                         required
                         onChange={(e) => setExtraDetails(e.target.value)}
                       />
@@ -433,6 +408,7 @@ const AddListing = () => {
                         type="text"
                         name="ltn__name"
                         placeholder="Roofing (*text)"
+                        value={roofing}
                         required
                         onChange={(e) => setRoofing(e.target.value)}
                       />
@@ -467,6 +443,7 @@ const AddListing = () => {
                         type="text"
                         id="Year Built (*only numbers)"
                         name="Year Built (*only numbers)"
+                        value={yearBuilt}
                         required
                         onChange={(e) => setYearBuilt(e.target.value)}
                       />
@@ -479,6 +456,7 @@ const AddListing = () => {
                         type="text"
                         id="Available from (*only numbers)"
                         name="Available from (*only numbers)"
+                        value={available}
                         required
                         onChange={(e) => setAvailable(e.target.value)}
                       />
@@ -499,7 +477,6 @@ const AddListing = () => {
                   </button>
                 </div>
               </form>
-              
             </div>
           </div>
         </div>
@@ -508,4 +485,4 @@ const AddListing = () => {
   );
 };
 
-export default AddListing;
+export default EditListing;

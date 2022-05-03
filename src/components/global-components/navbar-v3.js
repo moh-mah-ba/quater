@@ -87,7 +87,7 @@ const NavbarV3 = () => {
                               <Link to="/add-listing">Add Listing</Link>
                             </li>
                           ) : (
-                            ""
+                            <></>
                           )}
                         </ul>
                       </div>
@@ -114,7 +114,7 @@ const NavbarV3 = () => {
                     </div>
                   </div>
                 ) : (
-                  ""
+                  <></>
                 )}
               </div>
               <div className=" ltn__header-options ltn__header-options-2 mb-sm-20">

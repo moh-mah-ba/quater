@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link ,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { listProperty } from "../../redux/actions/propertyAction";
 
@@ -10,21 +10,18 @@ const FeaturedItemV1 = () => {
   const navigate = useNavigate();
 
   const propertyList = useSelector((state) => state.propertyReducer);
-  const { properties, images , currentItemsPerPage, totalPages } = propertyList;
+  const { properties, images, currentItemsPerPage, totalPages } = propertyList;
 
   useEffect(() => {
     dispatch(listProperty());
   }, [dispatch]);
 
-  const size = 3;
+  const itemsShowing = properties.slice(0, 3);
+  const itemsHidding = properties.slice(3, 6);
 
-  const items = properties.slice(0, size);
-
-  console.log("properties", items);
-
-//   const handleNavigate =(e) => {
-// 	  navigate(`property/propertie-details/${e}`)
-//   }
+  //   const handleNavigate =(e) => {
+  // 	  navigate(`property/propertie-details/${e}`)
+  //   }
 
   return (
     <div>
@@ -42,7 +39,7 @@ const FeaturedItemV1 = () => {
           </div>
           <div className="row ltn__product-slider-item-three-active slick-arrow-1">
             {/* ltn__product-item */}
-            {items?.map((item) => {
+            {/* {itemsShowing?.map((item) => {
               return (
                 <div key={item.index} className="col-lg-12">
                   <div className="ltn__product-item ltn__product-item-4 text-center---">
@@ -55,7 +52,9 @@ const FeaturedItemV1 = () => {
                       </Link>
                       <div className="product-badge">
                         <ul>
-                          <li className="sale-badge bg-green">For {item.saleType}</li>
+                          <li className="sale-badge bg-green">
+                            For {item.saleType}
+                          </li>
                         </ul>
                       </div>
                       <div className="product-img-location-gallery">
@@ -63,8 +62,8 @@ const FeaturedItemV1 = () => {
                           <ul>
                             <li>
                               <Link to="/contact">
-                                <i className="flaticon-pin" /> {item.city} {item.address},
-                                {item.neighborhood}
+                                <i className="flaticon-pin" /> {item.city}{" "}
+                                {item.address},{item.neighborhood}
                               </Link>
                             </li>
                           </ul>
@@ -73,9 +72,7 @@ const FeaturedItemV1 = () => {
                     </div>
                     <div className="product-info">
                       <div className="product-price">
-                        <span>
-                          $ {item.price}
-                        </span>
+                        <span>$ {item.price}</span>
                       </div>
                       <h2 className="product-title go-top">
                         <Link to={`property/propertie-details/${item._id}`}>
@@ -113,10 +110,10 @@ const FeaturedItemV1 = () => {
                   </div>
                 </div>
               );
-            })}
+            })} */}
 
             {/* ltn__product-item */}
-            {/* <div className="col-lg-12">
+            <div className="col-lg-12">
               <div className="ltn__product-item ltn__product-item-4 text-center---">
                 <div className="product-img go-top">
                   <Link to="/product-details">
@@ -195,9 +192,9 @@ const FeaturedItemV1 = () => {
                   </ul>
                 </div>
               </div>
-            </div> */}
+            </div>
             {/* ltn__product-item */}
-            {/* <div className="col-lg-12">
+            <div className="col-lg-12">
               <div className="ltn__product-item ltn__product-item-4 text-center---">
                 <div className="product-img go-top">
                   <Link to="/product-details">
@@ -276,9 +273,9 @@ const FeaturedItemV1 = () => {
                   </ul>
                 </div>
               </div>
-            </div> */}
+            </div>
             {/* ltn__product-item */}
-            {/* <div className="col-lg-12">
+            <div className="col-lg-12">
               <div className="ltn__product-item ltn__product-item-4 text-center---">
                 <div className="product-img go-top">
                   <Link to="/product-details">
@@ -359,9 +356,9 @@ const FeaturedItemV1 = () => {
                   </ul>
                 </div>
               </div>
-            </div> */}
+            </div>
             {/* ltn__product-item */}
-            {/* <div className="col-lg-12">
+            <div className="col-lg-12">
               <div className="ltn__product-item ltn__product-item-4 text-center---">
                 <div className="product-img go-top">
                   <Link to="/product-details">
@@ -442,7 +439,7 @@ const FeaturedItemV1 = () => {
                   </ul>
                 </div>
               </div>
-            </div> */}
+            </div>
             {/*  */}
           </div>
         </div>

@@ -5,6 +5,8 @@ import {
   PROPERTY_LIST_FAIL,
   PROPERTY_DETAILS_SUCCESS,
   PROPERTY_DETAILS_FAIL,
+  PROPERTY_SEARCH_SUCCESS,
+  PROPERTY_SEARCH_FAIL,
 } from "../constants/propertyconstants";
 
 export const propertyReducer = (
@@ -35,12 +37,26 @@ export const propertyReducer = (
 };
 
 export const propertyDetailsReducer = (state = { property: {}, images: [] }, action) => {
-  // console.log("state", state);
-  // console.log("action", action);
   switch (action.type) {
     case PROPERTY_DETAILS_SUCCESS:
       return { property: action.payload , images: action.payload.images};
     case PROPERTY_DETAILS_FAIL:
+      return { error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const searchPropertyReducer = (
+  state = { searchList: [] },
+  action
+) => {
+  console.log("state" , state)
+  console.log("action" , action)
+  switch (action.type) {
+    case PROPERTY_SEARCH_SUCCESS:
+      return { searchList: action.payload };
+    case PROPERTY_SEARCH_FAIL:
       return { error: action.payload };
     default:
       return state;

@@ -6,6 +6,10 @@ import {
   PROPERTY_LIST_FAIL,
   PROPERTY_DETAILS_SUCCESS,
   PROPERTY_DETAILS_FAIL,
+  PROPERTY_SEARCH_SUCCESS,
+  PROPERTY_SEARCH_FAIL,
+  PROPERTY_EDIT_SUCCESS,
+  PROPERTY_EDIT_FAIL,
 } from "../constants/propertyconstants";
 
 
@@ -27,6 +31,84 @@ export const detailsProperty = (propertyId) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PROPERTY_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const searchAction = (search) => async (dispatch) => {
+
+  try {
+    const { data } = await api.get(`/property/search/${search}`);
+    dispatch({ type: PROPERTY_SEARCH_SUCCESS, payload: data });
+    dispatch({ type: PROPERTY_LIST_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: PROPERTY_SEARCH_FAIL,
+      payload: error.message,
+    });
+  }
+};
+
+
+export const editProperty = (
+  propertyId,
+  title,
+  description,
+  price,
+  typeOfProperty,
+  saleType,
+  saleStatus,
+  imagesList,
+  video,
+  city,
+  address,
+  neighborhood,
+  size,
+  rooms,
+  bedrooms,
+  bathrooms,
+  garages,
+  yearBuilt,
+  available,
+  basement,
+  extraDetails,
+  roofing,
+  floorNumber
+) => async (dispatch) => {
+  try {
+    const { data } = await api.put(`/property/edit-listing/${propertyId}`, {
+      // propertyId,
+      title,
+      description,
+      price,
+      typeOfProperty,
+      saleType,
+      saleStatus,
+      imagesList,
+      video,
+      city,
+      address,
+      neighborhood,
+      size,
+      rooms,
+      bedrooms,
+      bathrooms,
+      garages,
+      yearBuilt,
+      available,
+      basement,
+      extraDetails,
+      roofing,
+      floorNumber
+    });
+    dispatch({ type: PROPERTY_EDIT_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: PROPERTY_EDIT_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

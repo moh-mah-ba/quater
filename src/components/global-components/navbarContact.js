@@ -78,15 +78,12 @@ const NavbarContact = () => {
                           <li>
                             <Link to="/contact">Contact</Link>
                           </li>
-                          {""}
                           {userInformation ? (
                             <li className="special-link">
                               <Link to="/add-listing">Add Listing</Link>
                             </li>
                           ) : (
-                            <li className="special-link">
-                              <Link to="/"></Link>
-                            </li>
+                            <></>
                           )}
                         </ul>
                       </div>
@@ -113,7 +110,7 @@ const NavbarContact = () => {
                     </div>
                   </div>
                 ) : (
-                  ""
+                  <></>
                 )}
               </div>
               <div className="col ltn__header-options ltn__header-options-2 mb-sm-20">
