@@ -14,8 +14,7 @@ const NavbarV3 = () => {
   };
 
   let publicUrl = process.env.PUBLIC_URL + "/";
-  // let imgattr = "logo";
-  // let anchor = "#";
+
   return (
     <div>
       <header className="ltn__header-area ltn__header-5 ltn__header-logo-and-mobile-menu-in-mobile ltn__header-logo-and-mobile-menu ltn__header-transparent gradient-color-4---">
@@ -59,10 +58,12 @@ const NavbarV3 = () => {
                 <div className="col d-flex justify-content-start">
                   <div className="site-logo-wrap">
                     <div className="site-logo go-top">
-                      <Link to="/">
+                      <Link to="/"
+                      >
                         <img
                           src={publicUrl + "assets/img/logo-2.png"}
                           alt="Logo"
+
                         />
                       </Link>
                     </div>
@@ -151,7 +152,7 @@ const NavbarV3 = () => {
           <div className="ltn__utilize-menu-head">
             <div className="site-logo">
               <Link to="/">
-                <img src={publicUrl + "assets/img/logo.png"} alt="Logo" />
+                <img src={publicUrl + "assets/img/logo-2.png"} alt="Logo" />
               </Link>
             </div>
             <button className="ltn__utilize-close">×</button>
