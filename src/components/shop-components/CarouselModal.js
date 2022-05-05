@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import classes from "./CarouselModal.module.css";
+
 const CarouselModal = ({ clickedImg, images, setShowModal }) => {
   const [changeImg, setChangeImg] = useState(clickedImg);
   const prevImgHandler = () => {
@@ -24,13 +25,13 @@ const CarouselModal = ({ clickedImg, images, setShowModal }) => {
       ></div>
       {images.indexOf(changeImg) > 0 && (
         <span className={classes["left-arrow"]} onClick={prevImgHandler}>
-          &#60;
+           <i class="fa-solid fa-arrow-left"></i>
         </span>
       )}
       <img src={changeImg} alt="img" className={classes["carosual-img"]} />
       {images.indexOf(changeImg) < 4 && (
         <span className={classes["right-arrow"]} onClick={nextImgHandler}>
-          &#62;
+           <i class="fa-solid fa-arrow-right"></i>
         </span>
       )}
     </>

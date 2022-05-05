@@ -51,8 +51,6 @@ export const searchPropertyReducer = (
   state = { searchList: [] },
   action
 ) => {
-  console.log("state" , state)
-  console.log("action" , action)
   switch (action.type) {
     case PROPERTY_SEARCH_SUCCESS:
       return { searchList: action.payload };

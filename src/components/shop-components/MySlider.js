@@ -40,7 +40,7 @@ const MySlider = () => {
       <div className={classes.container}>
         {images.indexOf(firstImg) > 0 && (
           <span className={classes["left-arrow"]} onClick={prevImgHandler}>
-            &#60;
+           <i class="fa-solid fa-arrow-left"></i>
           </span>
         )}
         <div onClick={showModalHandler} className={classes.wrapper}>
@@ -60,7 +60,7 @@ const MySlider = () => {
 
         {images.indexOf(firstImg) <= 5 && (
           <span className={classes["right-arrow"]} onClick={nextImgHandler}>
-            &#62;
+            <i class="fa-solid fa-arrow-right"></i>
           </span>
         )}
       </div>
