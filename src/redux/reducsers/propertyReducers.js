@@ -11,6 +11,7 @@ import {
 
 export const propertyReducer = (
   state = {
+    allProperties: [],
     properties: [],
     images: [],
     allProducts: [],
@@ -24,6 +25,7 @@ export const propertyReducer = (
   switch (action.type) {
     case PROPERTY_LIST_SUCCESS:
       return {
+        allProperties: action.payload.allProperties,
         properties: action.payload.properties,
         images: action.payload.images,
         currentItemsPerPage: action.payload.currentItemsPerPage,

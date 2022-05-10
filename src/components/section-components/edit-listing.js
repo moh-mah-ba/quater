@@ -249,7 +249,7 @@ const EditListing = (props) => {
                             key={index}
                             className="col-3 border m-3 d-inline-block"
                           >
-                            <img src={image} alt="uploud" />
+                            <img src={image.secure_url} alt="uploud" />
                             <div className="d-flex justify-content-between">
                               <p>{index + 1}</p>
                             </div>

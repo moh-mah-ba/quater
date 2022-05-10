@@ -72,14 +72,14 @@ const AddListing = () => {
           axios.post("https://api.cloudinary.com/v1_1/dembs0jhl/image/upload" , formData)
           .then(async (res) => {
             const imageURL = res;
-            setImages(old => [...old , imageURL.data.secure_url])            
+            setImages(old => [...old , imageURL.data])            
           })
           }
         })
       }
       setUploded(true)
     };
-
+console.log("images" , images)
   const dispatch = useDispatch();
 
   const submitHandler = (e) => {

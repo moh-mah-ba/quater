@@ -18,37 +18,37 @@ const ProductSliderV1 = () => {
 
 		  <div className="col-lg-12">
             <div className="ltn__img-slide-item-4">
-              <a href={images[0]} data-rel="lightcase:myCollection">
-                <img src={images[0]} alt="Image" />
+              <a href={images[0]?.secure_url} data-rel="lightcase:myCollection">
+                <img src={images[0]?.secure_url} alt="Image" />
               </a>
             </div>
           </div>
 
           <div className="col-lg-12">
             <div className="ltn__img-slide-item-4">
-              <a href={images[1]} data-rel="lightcase:myCollection">
-                <img src={images[1]} alt="Image" />
+              <a href={images[1]?.secure_url} data-rel="lightcase:myCollection">
+                <img src={images[1]?.secure_url} alt="Image" />
               </a>
             </div>
           </div>
           <div className="col-lg-12">
             <div className="ltn__img-slide-item-4">
-              <a href={images[2]} data-rel="lightcase:myCollection">
-                <img src={images[2]} alt="Image" />
+              <a href={images[2]?.secure_url} data-rel="lightcase:myCollection">
+                <img src={images[2]?.secure_url} alt="Image" />
               </a>
             </div>
           </div>
           <div className="col-lg-12">
             <div className="ltn__img-slide-item-4">
-              <a href={images[3]} data-rel="lightcase:myCollection">
-                <img src={images[3]} alt="Image" />
+              <a href={images[3]?.secure_url} data-rel="lightcase:myCollection">
+                <img src={images[3]?.secure_url} alt="Image" />
               </a>
             </div>
           </div>
           <div className="col-lg-12">
             <div className="ltn__img-slide-item-4">
-              <a href={images[4]} data-rel="lightcase:myCollection">
-                <img src={images[4]} alt="Image" />
+              <a href={images[4]?.secure_url} data-rel="lightcase:myCollection">
+                <img src={images[4]?.secure_url} alt="Image" />
               </a>
             </div>
           </div>

@@ -10,6 +10,8 @@ import {
   PROPERTY_SEARCH_FAIL,
   PROPERTY_EDIT_SUCCESS,
   PROPERTY_EDIT_FAIL,
+  PROPERTY_DELETE_SUCCESS,
+  PROPERTY_DELETE_FAIL,
 } from "../constants/propertyconstants";
 
 
@@ -81,7 +83,6 @@ export const editProperty = (
 ) => async (dispatch) => {
   try {
     const { data } = await api.put(`/property/edit-listing/${propertyId}`, {
-      // propertyId,
       title,
       description,
       price,
@@ -176,3 +177,18 @@ export const addpropertyAction =
       });
     }
   };
+
+
+  export const deletePropertAction =(propertyId) => async (dispatch) => {
+    console.log("propertyId" , propertyId)
+    try{
+      const { data } = await api.delete(`/property/delete/${propertyId}`);
+      dispatch({ type: PROPERTY_DELETE_SUCCESS, payload: data });
+      dispatch({ type: PROPERTY_LIST_SUCCESS, payload: data });
+    }catch (error) {
+      dispatch({
+        type: PROPERTY_DELETE_FAIL,
+        payload: error.message,
+      });
+    }
+  }

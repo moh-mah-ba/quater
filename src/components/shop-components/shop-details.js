@@ -3,7 +3,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import FeaturedItem from "../section-components/featured-item-v1";
 import { detailsProperty } from "../../redux/actions/propertyAction";
-// import FeaturedItem from './section-components/featured-item-v1';
 
 const ShopDetails = (props) => {
   let publicUrl = process.env.PUBLIC_URL + "/";
@@ -54,6 +53,9 @@ const ShopDetails = (props) => {
                   <li>
                     <label>Year built:</label> <span>{property.yearBuilt}</span>
                   </li>
+                  <li>
+                    <label>Available Date</label> <span>{property.available}</span>
+                  </li>
                 </ul>
                 <ul>
                   <li>
@@ -72,23 +74,23 @@ const ShopDetails = (props) => {
               <div className="ltn__property-details-gallery mb-30">
                 <div className="row">
                   <div className="col-md-6">
-                    <a href={images[0]} data-rel="lightcase:myCollection">
-                      <img className="mb-30" src={images[0]} alt="Image" />
+                    <a href={images[0]?.secure_url} data-rel="lightcase:myCollection">
+                      <img className="mb-30" src={images[0]?.secure_url} alt="Image" />
                     </a>
-                    <a href={images[1]} data-rel="lightcase:myCollection">
-                      <img className="mb-30" src={images[1]} alt="Image" />
-                    </a>
-                  </div>
-                  <div className="col-md-6">
-                    <a href={images[2]} data-rel="lightcase:myCollection">
-                      <img className="mb-30" src={images[2]} alt="Image" />
+                    <a href={images[1]?.secure_url} data-rel="lightcase:myCollection">
+                      <img className="mb-30" src={images[1]?.secure_url} alt="Image" />
                     </a>
                   </div>
                   <div className="col-md-6">
-                    <a href={images[3]} data-rel="lightcase:myCollection"></a>
+                    <a href={images[2]?.secure_url} data-rel="lightcase:myCollection">
+                      <img className="mb-30" src={images[2]?.secure_url} alt="Image" />
+                    </a>
                   </div>
                   <div className="col-md-6">
-                    <a href={images[4]} data-rel="lightcase:myCollection"></a>
+                    <a href={images[3]?.secure_url} data-rel="lightcase:myCollection"></a>
+                  </div>
+                  <div className="col-md-6">
+                    <a href={images[4]?.secure_url} data-rel="lightcase:myCollection"></a>
                   </div>
                 </div>
               </div>
@@ -106,10 +108,10 @@ const ShopDetails = (props) => {
                   <i className="fa fa-play" />
                 </a>
               </div>
-              {/* <div className="ltn__shop-details-tab-content-inner--- ltn__shop-details-tab-inner-2 ltn__product-details-review-inner mb-60"></div>
+              <div className="ltn__shop-details-tab-content-inner--- ltn__shop-details-tab-inner-2 ltn__product-details-review-inner mb-60"></div>
               <div className="row">
                 <FeaturedItem />
-              </div>*/}
+              </div>
             </div>
           </div>
         </div>

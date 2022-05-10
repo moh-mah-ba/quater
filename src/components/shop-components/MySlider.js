@@ -11,7 +11,7 @@ const MySlider = () => {
   const [clickedImg, setClickedImg] = useState();
 
   useEffect(() => {
-    setFirstImg(images[0]);
+    setFirstImg(images[0]?.secure_url);
   }, [images]);
 
   const prevImgHandler = () => {
@@ -25,7 +25,7 @@ const MySlider = () => {
   const nextImgHandler = () => {
     setFirstImg(prevState =>
       images.indexOf(prevState) >= 3
-        ? images[0]
+        ? images[0]?.secure_url
         : images[images.indexOf(prevState) + 1]
     );
   };
@@ -40,7 +40,7 @@ const MySlider = () => {
       <div className={classes.container}>
         {images.indexOf(firstImg) > 0 && (
           <span className={classes["left-arrow"]} onClick={prevImgHandler}>
-           <i class="fa-solid fa-arrow-left"></i>
+            &#60;
           </span>
         )}
         <div onClick={showModalHandler} className={classes.wrapper}>
@@ -52,7 +52,7 @@ const MySlider = () => {
           </div>
           <div className={classes.last}>
             <img
-              src={images[images.indexOf(firstImg) + 2] || images[0]}
+              src={images[images.indexOf(firstImg) + 2] || images[0]?.secure_url}
               alt="image"
             />
           </div>
@@ -60,7 +60,7 @@ const MySlider = () => {
 
         {images.indexOf(firstImg) <= 5 && (
           <span className={classes["right-arrow"]} onClick={nextImgHandler}>
-            <i class="fa-solid fa-arrow-right"></i>
+            &#62;
           </span>
         )}
       </div>

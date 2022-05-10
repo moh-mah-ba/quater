@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { listProperty } from "../../redux/actions/propertyAction";
-
 
 const FeaturedItemV1 = () => {
   let publicUrl = process.env.PUBLIC_URL + "/";
@@ -11,16 +10,13 @@ const FeaturedItemV1 = () => {
   const navigate = useNavigate();
 
   const propertyList = useSelector((state) => state.propertyReducer);
-  const { properties, images, currentItemsPerPage, totalPages } = propertyList;
+  const { allProperties} = propertyList;
 
   useEffect(() => {
     dispatch(listProperty());
   }, [dispatch]);
 
-  const reversedItems = properties.reverse();
-
-  const itemsShowing = reversedItems.slice(0, 6);
-
+  const reversedItems = allProperties.reverse();
 
   return (
     <div>
@@ -30,110 +26,26 @@ const FeaturedItemV1 = () => {
 			      <div className="col-lg-12">
 			        <div className="section-title-area ltn__section-title-2--- text-center">
 			          <h6 className="section-subtitle section-subtitle-2 ltn__secondary-color">Properties</h6>
-			          <h1 className="section-title">Featured Listings</h1>
+			          <h1 className="section-title">Latest Property</h1>
 			        </div>
 			      </div>
 			    </div>
 			    <div className="row ltn__product-slider-item-three-active slick-arrow-1">
 			      {/* ltn__product-item */}
-
-            {itemsShowing.map((property , index) => {
-              return(
-                <div key={index} className="col-lg-12">
-                <div className="ltn__product-item ltn__product-item-4 text-center---">
-                  <div className="product-img go-top">
-                    <Link to={`/property/propertie-details/${property._id}`}>
-                      <img
-                        src={property.images[0]}
-                        alt="first-image"
-                      />
-                    </Link>
-                    <div className="product-badge">
-                      <ul>
-                        <li className="sale-badge bg-green">For {property.saleType}</li>
-                      </ul>
-                    </div>
-                    <div className="product-img-location-gallery">
-                      <div className="product-img-location go-top">
-                        <ul>
-                          <li>
-                            <Link to="/contact">
-                              <i className="flaticon-pin" /> {property.city}
-                              {property.address}, {properties.neighborhood}
-                            </Link>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="product-info">
-                    <div className="product-price">
-                      <span>
-                        $ {property.price}
-                      </span>
-                    </div>
-                    <h2 className="product-title go-top">
-                      <Link to={`/property/propertie-details/${property._id}`}>
-                        {property.title}
-                      </Link>
-                    </h2>
-                    <div className="product-description">
-                      <p>
-                        Beautiful Huge 1 Family House In Heart Of <br />
-                        Westbury. Newly Renovated With New Wood
-                      </p>
-                    </div>
-                    <ul className="ltn__list-item-2 ltn__list-item-2-before">
-                      <li>
-                        <span>
-                          {property.bedrooms} <i className="flaticon-bed" />
-                        </span>
-                        Bedrooms
-                      </li>
-                      <li>
-                        <span>
-                          {property.bathrooms} <i className="flaticon-clean" />
-                        </span>
-                        Bathrooms
-                      </li>
-                      <li>
-                        <span>
-                          {property.size}
-                          <i className="flaticon-square-shape-design-interface-tool-symbol" />
-                        </span>
-                        Meter
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              )
-            })} 
-
-			      {/* <div className="col-lg-12">
+			      <div className="col-lg-12">
 			        <div className="ltn__product-item ltn__product-item-4 text-center---">
 			          <div className="product-img go-top">
-			            <Link to="/product-details"><img src={publicUrl+"assets/img/product-3/1.jpg"} alt="#" /></Link>
+			            <Link to={`/property/propertie-details/${reversedItems[0]?._id}`}><img src={reversedItems[0]?.images[0].secure_url} alt="#" /></Link>
 			            <div className="product-badge">
 			              <ul>
-			                <li className="sale-badge bg-green">For Rent</li>
+			                <li className="sale-badge bg-green">For {reversedItems[0]?.saleType}</li>
 			              </ul>
 			            </div>
 			            <div className="product-img-location-gallery">
 			              <div className="product-img-location go-top">
 			                <ul>
 			                  <li>
-			                    <Link to="/contact"><i className="flaticon-pin" /> Belmont Gardens, Chicago</Link>
-			                  </li>
-			                </ul>
-			              </div>
-			              <div className="product-img-gallery go-top">
-			                <ul>
-			                  <li>
-			                    <Link to="/product-details"><i className="fas fa-camera" /> 4</Link>
-			                  </li>
-			                  <li>
-			                    <Link to="/product-details"><i className="fas fa-film" /> 2</Link>
+			                    <Link to="/contact"><i className="flaticon-pin" /> {reversedItems[0]?.city} {reversedItems[0]?.address}, {reversedItems[0]?.neighborhood}</Link>
 			                  </li>
 			                </ul>
 			              </div>
@@ -141,81 +53,42 @@ const FeaturedItemV1 = () => {
 			          </div>
 			          <div className="product-info">
 			            <div className="product-price">
-			              <span>$34,900<label>/Month</label></span>
+			              <span>$ {reversedItems[0]?.price} </span>
 			            </div>
-			            <h2 className="product-title go-top"><Link to="/product-details">New Apartment Nice View</Link></h2>
+			            <h2 className="product-title go-top"><Link to={`/property/propertie-details/${reversedItems[0]?._id}`}>{reversedItems[0]?.title}</Link></h2>
 			            <div className="product-description">
 			              <p>Beautiful Huge 1 Family House In Heart Of <br />
 			                Westbury. Newly Renovated With New Wood</p>
 			            </div>
 			            <ul className="ltn__list-item-2 ltn__list-item-2-before">
-			              <li><span>3 <i className="flaticon-bed" /></span>
+			              <li><span>{reversedItems[0]?.bedrooms} <i className="flaticon-bed" /></span>
 			                Bedrooms
 			              </li>
-			              <li><span>2 <i className="flaticon-clean" /></span>
+			              <li><span>{reversedItems[0]?.bathrooms} <i className="flaticon-clean" /></span>
 			                Bathrooms
 			              </li>
-			              <li><span>3450 <i className="flaticon-square-shape-design-interface-tool-symbol" /></span>
-			                square Ft
+			              <li><span>{reversedItems[0]?.size} <i className="flaticon-square-shape-design-interface-tool-symbol" /></span>
+			                Meter
 			              </li>
 			            </ul>
 			          </div>
-			          <div className="product-info-bottom">
-			            <div className="real-estate-agent go-top">
-			              <div className="agent-img">
-			                <Link to="/team-details"><img src={publicUrl+"assets/img/blog/author.jpg"} alt="#" /></Link>
-			              </div>
-			              <div className="agent-brief">
-			                <h6><Link to="/team-details">William Seklo</Link></h6>
-			                <small>Estate Agents</small>
-			              </div>
-			            </div>
-			            <div className="product-hover-action">
-			              <ul>
-			                <li>
-			                  <a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#quick_view_modal">
-			                    <i className="flaticon-expand" />
-			                  </a>
-			                </li>
-			                <li>
-			                  <a href="#" title="Wishlist" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal">
-			                    <i className="flaticon-heart-1" /></a>
-			                </li>
-			                <li>
-			                  <a href="product-details.html" title="Product Details">
-			                    <i className="flaticon-add" />
-			                  </a>
-			                </li>
-			              </ul>
-			            </div>
-			          </div>
 			        </div>
-			      </div> */}
+			      </div>
 			      {/* ltn__product-item */}
-			      {/* <div className="col-lg-12">
+			      <div className="col-lg-12">
 			        <div className="ltn__product-item ltn__product-item-4 text-center---">
 			          <div className="product-img go-top">
-			            <Link to="/product-details"><img src={publicUrl+"assets/img/product-3/2.jpg"} alt="#" /></Link>
+			            <Link to={`/property/propertie-details/${reversedItems[1]?._id}`}><img src={reversedItems[1]?.images[1].secure_url} alt="#" /></Link>
 			            <div className="product-badge">
 			              <ul>
-			                <li className="sale-badge bg-green---">For Sale</li>
+			                <li className="sale-badge bg-green">For {reversedItems[1]?.saleType}</li>
 			              </ul>
 			            </div>
 			            <div className="product-img-location-gallery">
 			              <div className="product-img-location go-top">
 			                <ul>
 			                  <li>
-			                    <Link to="/contact"><i className="flaticon-pin" /> Belmont Gardens, Chicago</Link>
-			                  </li>
-			                </ul>
-			              </div>
-			              <div className="product-img-gallery go-top">
-			                <ul>
-			                  <li>
-			                    <Link to="/product-details"><i className="fas fa-camera" /> 4</Link>
-			                  </li>
-			                  <li>
-			                    <Link to="/product-details"><i className="fas fa-film" /> 2</Link>
+			                    <Link to="/contact"><i className="flaticon-pin" /> {reversedItems[1]?.city} {reversedItems[1]?.address}, {reversedItems[1]?.neighborhood}</Link>
 			                  </li>
 			                </ul>
 			              </div>
@@ -223,81 +96,42 @@ const FeaturedItemV1 = () => {
 			          </div>
 			          <div className="product-info">
 			            <div className="product-price">
-			              <span>$34,900<label>/Month</label></span>
+			              <span>$ {reversedItems[1]?.price} </span>
 			            </div>
-			            <h2 className="product-title go-top"><Link to="/product-details">Modern Apartments</Link></h2>
+			            <h2 className="product-title go-top"><Link to={`/property/propertie-details/${reversedItems[1]?._id}`}>{reversedItems[1]?.title}</Link></h2>
 			            <div className="product-description">
 			              <p>Beautiful Huge 1 Family House In Heart Of <br />
 			                Westbury. Newly Renovated With New Wood</p>
 			            </div>
 			            <ul className="ltn__list-item-2 ltn__list-item-2-before">
-			              <li><span>3 <i className="flaticon-bed" /></span>
+			              <li><span>{reversedItems[1]?.bedrooms} <i className="flaticon-bed" /></span>
 			                Bedrooms
 			              </li>
-			              <li><span>2 <i className="flaticon-clean" /></span>
+			              <li><span>{reversedItems[1]?.bathrooms} <i className="flaticon-clean" /></span>
 			                Bathrooms
 			              </li>
-			              <li><span>3450 <i className="flaticon-square-shape-design-interface-tool-symbol" /></span>
-			                square Ft
+			              <li><span>{reversedItems[1]?.size} <i className="flaticon-square-shape-design-interface-tool-symbol" /></span>
+			                Meter
 			              </li>
 			            </ul>
 			          </div>
-			          <div className="product-info-bottom">
-			            <div className="real-estate-agent go-top">
-			              <div className="agent-img">
-			                <Link to="/team-details"><img src={publicUrl+"assets/img/blog/author.jpg"} alt="#" /></Link>
-			              </div>
-			              <div className="agent-brief">
-			                <h6><Link to="/team-details">William Seklo</Link></h6>
-			                <small>Estate Agents</small>
-			              </div>
-			            </div>
-			            <div className="product-hover-action">
-			              <ul>
-			                <li>
-			                  <a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#quick_view_modal">
-			                    <i className="flaticon-expand" />
-			                  </a>
-			                </li>
-			                <li>
-			                  <a href="#" title="Wishlist" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal">
-			                    <i className="flaticon-heart-1" /></a>
-			                </li>
-			                <li>
-			                  <a href="product-details.html" title="Product Details">
-			                    <i className="flaticon-add" />
-			                  </a>
-			                </li>
-			              </ul>
-			            </div>
-			          </div>
 			        </div>
-			      </div> */}
+			      </div>
 			      {/* ltn__product-item */}
-			      {/* <div className="col-lg-12">
+			      <div className="col-lg-12">
 			        <div className="ltn__product-item ltn__product-item-4 text-center---">
 			          <div className="product-img go-top">
-			            <Link to="/product-details"><img src={publicUrl+"assets/img/product-3/3.jpg"} alt="#" /></Link>
+			            <Link to={`/property/propertie-details/${reversedItems[2]?._id}`}><img src={reversedItems[2]?.images[2].secure_url} alt="#" /></Link>
 			            <div className="product-badge">
 			              <ul>
-			                <li className="sale-badge bg-green">For Rent</li>
+			                <li className="sale-badge bg-green">For {reversedItems[2]?.saleType}</li>
 			              </ul>
 			            </div>
 			            <div className="product-img-location-gallery">
 			              <div className="product-img-location go-top">
 			                <ul>
 			                  <li>
-			                    <Link to="/contact"><i className="flaticon-pin" /> Belmont Gardens, Chicago</Link>
-			                  </li>
-			                </ul>
-			              </div>
-			              <div className="product-img-gallery go-top">
-			                <ul>
-			                  <li>
-			                    <Link to="/product-details"><i className="fas fa-camera" /> 4</Link>
-			                  </li>
-			                  <li>
-			                    <Link to="/product-details"><i className="fas fa-film" /> 2</Link>
+			                    <Link to="/contact"><i className="flaticon-pin" /> {reversedItems[2]?.city} {reversedItems[2]?.address}, {reversedItems[2]?.neighborhood}</Link>
 			                  </li>
 			                </ul>
 			              </div>
@@ -305,81 +139,42 @@ const FeaturedItemV1 = () => {
 			          </div>
 			          <div className="product-info">
 			            <div className="product-price">
-			              <span>$34,900<label>/Month</label></span>
+			              <span>$ {reversedItems[2]?.price} </span>
 			            </div>
-			            <h2 className="product-title go-top"><Link to="/product-details">Comfortable Apartment</Link></h2>
+			            <h2 className="product-title go-top"><Link to={`/property/propertie-details/${reversedItems[2]?._id}`}>{reversedItems[2]?.title}</Link></h2>
 			            <div className="product-description">
 			              <p>Beautiful Huge 1 Family House In Heart Of <br />
 			                Westbury. Newly Renovated With New Wood</p>
 			            </div>
 			            <ul className="ltn__list-item-2 ltn__list-item-2-before">
-			              <li><span>3 <i className="flaticon-bed" /></span>
+			              <li><span>{reversedItems[2]?.bedrooms} <i className="flaticon-bed" /></span>
 			                Bedrooms
 			              </li>
-			              <li><span>2 <i className="flaticon-clean" /></span>
+			              <li><span>{reversedItems[2]?.bathrooms} <i className="flaticon-clean" /></span>
 			                Bathrooms
 			              </li>
-			              <li><span>3450 <i className="flaticon-square-shape-design-interface-tool-symbol" /></span>
-			                square Ft
+			              <li><span>{reversedItems[2]?.size} <i className="flaticon-square-shape-design-interface-tool-symbol" /></span>
+			                Meter
 			              </li>
 			            </ul>
 			          </div>
-			          <div className="product-info-bottom">
-			            <div className="real-estate-agent go-top">
-			              <div className="agent-img">
-			                <Link to="/team-details"><img src={publicUrl+"assets/img/blog/author.jpg"} alt="#" /></Link>
-			              </div>
-			              <div className="agent-brief">
-			                <h6><Link to="/team-details">William Seklo</Link></h6>
-			                <small>Estate Agents</small>
-			              </div>
-			            </div>
-			            <div className="product-hover-action">
-			              <ul>
-			                <li>
-			                  <a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#quick_view_modal">
-			                    <i className="flaticon-expand" />
-			                  </a>
-			                </li>
-			                <li>
-			                  <a href="#" title="Wishlist" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal">
-			                    <i className="flaticon-heart-1" /></a>
-			                </li>
-			                <li>
-			                  <a href="product-details.html" title="Product Details">
-			                    <i className="flaticon-add" />
-			                  </a>
-			                </li>
-			              </ul>
-			            </div>
-			          </div>
 			        </div>
-			      </div> */}
+			      </div>
 			      {/* ltn__product-item */}
-			      {/* <div className="col-lg-12">
+			      <div className="col-lg-12">
 			        <div className="ltn__product-item ltn__product-item-4 text-center---">
 			          <div className="product-img go-top">
-			            <Link to="/product-details"><img src={publicUrl+"assets/img/product-3/4.jpg"} alt="#" /></Link>
+			            <Link to={`/property/propertie-details/${reversedItems[3]?._id}`}><img src={reversedItems[3]?.images[3].secure_url} alt="#" /></Link>
 			            <div className="product-badge">
 			              <ul>
-			                <li className="sale-badge bg-green">For Rent</li>
+			                <li className="sale-badge bg-green">For {reversedItems[3]?.saleType}</li>
 			              </ul>
 			            </div>
 			            <div className="product-img-location-gallery">
 			              <div className="product-img-location go-top">
 			                <ul>
 			                  <li>
-			                    <Link to="/contact"><i className="flaticon-pin" /> Belmont Gardens, Chicago</Link>
-			                  </li>
-			                </ul>
-			              </div>
-			              <div className="product-img-gallery go-top">
-			                <ul>
-			                  <li>
-			                    <Link to="/product-details"><i className="fas fa-camera" /> 4</Link>
-			                  </li>
-			                  <li>
-			                    <Link to="/product-details"><i className="fas fa-film" /> 2</Link>
+			                    <Link to="/contact"><i className="flaticon-pin" /> {reversedItems[3]?.city} {reversedItems[3]?.address}, {reversedItems[3]?.neighborhood}</Link>
 			                  </li>
 			                </ul>
 			              </div>
@@ -387,81 +182,42 @@ const FeaturedItemV1 = () => {
 			          </div>
 			          <div className="product-info">
 			            <div className="product-price">
-			              <span>$34,900<label>/Month</label></span>
+			              <span>$ {reversedItems[3]?.price} </span>
 			            </div>
-			            <h2 className="product-title go-top"><Link to="/product-details">Luxury villa in Rego Park </Link></h2>
+			            <h2 className="product-title go-top"><Link to={`/property/propertie-details/${reversedItems[3]?._id}`}>{reversedItems[3]?.title}</Link></h2>
 			            <div className="product-description">
 			              <p>Beautiful Huge 1 Family House In Heart Of <br />
 			                Westbury. Newly Renovated With New Wood</p>
 			            </div>
 			            <ul className="ltn__list-item-2 ltn__list-item-2-before">
-			              <li><span>3 <i className="flaticon-bed" /></span>
+			              <li><span>{reversedItems[3]?.bedrooms} <i className="flaticon-bed" /></span>
 			                Bedrooms
 			              </li>
-			              <li><span>2 <i className="flaticon-clean" /></span>
+			              <li><span>{reversedItems[3]?.bathrooms} <i className="flaticon-clean" /></span>
 			                Bathrooms
 			              </li>
-			              <li><span>3450 <i className="flaticon-square-shape-design-interface-tool-symbol" /></span>
-			                square Ft
+			              <li><span>{reversedItems[3]?.size} <i className="flaticon-square-shape-design-interface-tool-symbol" /></span>
+			                Meter
 			              </li>
 			            </ul>
 			          </div>
-			          <div className="product-info-bottom">
-			            <div className="real-estate-agent go-top">
-			              <div className="agent-img">
-			                <Link to="/team-details"><img src={publicUrl+"assets/img/blog/author.jpg"} alt="#" /></Link>
-			              </div>
-			              <div className="agent-brief">
-			                <h6><Link to="/team-details">William Seklo</Link></h6>
-			                <small>Estate Agents</small>
-			              </div>
-			            </div>
-			            <div className="product-hover-action">
-			              <ul>
-			                <li>
-			                  <a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#quick_view_modal">
-			                    <i className="flaticon-expand" />
-			                  </a>
-			                </li>
-			                <li>
-			                  <a href="#" title="Wishlist" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal">
-			                    <i className="flaticon-heart-1" /></a>
-			                </li>
-			                <li>
-			                  <a href="product-details.html" title="Product Details">
-			                    <i className="flaticon-add" />
-			                  </a>
-			                </li>
-			              </ul>
-			            </div>
-			          </div>
 			        </div>
-			      </div> */}
+			      </div>
 			      {/* ltn__product-item */}
-			      {/* <div className="col-lg-12">
+			      <div className="col-lg-12">
 			        <div className="ltn__product-item ltn__product-item-4 text-center---">
 			          <div className="product-img go-top">
-			            <Link to="/product-details"><img src={publicUrl+"assets/img/product-3/5.jpg"} alt="#" /></Link>
+			            <Link to={`/property/propertie-details/${reversedItems[4]?._id}`}><img src={reversedItems[4]?.images[4].secure_url} alt="#" /></Link>
 			            <div className="product-badge">
 			              <ul>
-			                <li className="sale-badge bg-green">For Rent</li>
+			                <li className="sale-badge bg-green">For {reversedItems[4]?.saleType}</li>
 			              </ul>
 			            </div>
 			            <div className="product-img-location-gallery">
 			              <div className="product-img-location go-top">
 			                <ul>
 			                  <li>
-			                    <Link to="/contact"><i className="flaticon-pin" /> Belmont Gardens, Chicago</Link>
-			                  </li>
-			                </ul>
-			              </div>
-			              <div className="product-img-gallery go-top">
-			                <ul>
-			                  <li>
-			                    <Link to="/product-details"><i className="fas fa-camera" /> 4</Link>
-			                  </li>
-			                  <li>
-			                    <Link to="/product-details"><i className="fas fa-film" /> 2</Link>
+			                    <Link to="/contact"><i className="flaticon-pin" /> {reversedItems[4]?.city} {reversedItems[4]?.address}, {reversedItems[4]?.neighborhood}</Link>
 			                  </li>
 			                </ul>
 			              </div>
@@ -469,226 +225,30 @@ const FeaturedItemV1 = () => {
 			          </div>
 			          <div className="product-info">
 			            <div className="product-price">
-			              <span>$34,900<label>/Month</label></span>
+			              <span>$ {reversedItems[4]?.price} </span>
 			            </div>
-			            <h2 className="product-title go-top"><Link to="/product-details">Beautiful Flat in Manhattan </Link></h2>
+			            <h2 className="product-title go-top"><Link to={`/property/propertie-details/${reversedItems[4]?._id}`}>{reversedItems[4]?.title}</Link></h2>
 			            <div className="product-description">
 			              <p>Beautiful Huge 1 Family House In Heart Of <br />
 			                Westbury. Newly Renovated With New Wood</p>
 			            </div>
 			            <ul className="ltn__list-item-2 ltn__list-item-2-before">
-			              <li><span>3 <i className="flaticon-bed" /></span>
+			              <li><span>{reversedItems[4]?.bedrooms} <i className="flaticon-bed" /></span>
 			                Bedrooms
 			              </li>
-			              <li><span>2 <i className="flaticon-clean" /></span>
+			              <li><span>{reversedItems[4]?.bathrooms} <i className="flaticon-clean" /></span>
 			                Bathrooms
 			              </li>
-			              <li><span>3450 <i className="flaticon-square-shape-design-interface-tool-symbol" /></span>
-			                square Ft
+			              <li><span>{reversedItems[4]?.size} <i className="flaticon-square-shape-design-interface-tool-symbol" /></span>
+			                Meter
 			              </li>
 			            </ul>
 			          </div>
-			          <div className="product-info-bottom">
-			            <div className="real-estate-agent go-top">
-			              <div className="agent-img">
-			                <Link to="/team-details"><img src={publicUrl+"assets/img/blog/author.jpg"} alt="#" /></Link>
-			              </div>
-			              <div className="agent-brief">
-			                <h6><Link to="/team-details">William Seklo</Link></h6>
-			                <small>Estate Agents</small>
-			              </div>
-			            </div>
-			            <div className="product-hover-action">
-			              <ul>
-			                <li>
-			                  <a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#quick_view_modal">
-			                    <i className="flaticon-expand" />
-			                  </a>
-			                </li>
-			                <li>
-			                  <a href="#" title="Wishlist" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal">
-			                    <i className="flaticon-heart-1" /></a>
-			                </li>
-			                <li>
-			                  <a href="product-details.html" title="Product Details">
-			                    <i className="flaticon-add" />
-			                  </a>
-			                </li>
-			              </ul>
-			            </div>
-			          </div>
 			        </div>
-			      </div> */}
+			      </div>
 			      {/*  */}
 			    </div>
 			  </div>
-			</div>
-			<div className="ltn__modal-area ltn__add-to-cart-modal-area">
-				<div className="modal fade" id="liton_wishlist_modal" tabIndex={-1}>
-					<div className="modal-dialog modal-md" role="document">
-					<div className="modal-content">
-						<div className="modal-header">
-						<button type="button" className="close" data-bs-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">×</span>
-						</button>
-						</div>
-						<div className="modal-body">
-						<div className="ltn__quick-view-modal-inner">
-							<div className="modal-product-item">
-							<div className="row">
-								<div className="col-12">
-								<div className="modal-product-img">
-									<img src={publicUrl+"assets/img/product/7.png"} alt="#" />
-								</div>
-								<div className="modal-product-info go-top">
-									<h5><Link to="/product-details">Brake Conversion Kit</Link></h5>
-									<p className="added-cart"><i className="fa fa-check-circle" />  Successfully added to your Wishlist</p>
-									<div className="btn-wrapper">
-									<Link to="/wishlist" className="theme-btn-1 btn btn-effect-1">View Wishlist</Link>
-									</div>
-								</div>
-								{/* additional-info */}
-								<div className="additional-info d-none">
-									<p>We want to give you <b>10% discount</b> for your first order, <br />  Use discount code at checkout</p>
-									<div className="payment-method">
-									<img src={publicUrl+"assets/img/icons/payment.png"} alt="#" />
-									</div>
-								</div>
-								</div>
-							</div>
-							</div>
-						</div>
-						</div>
-					</div>
-					</div>
-				</div>
-			</div>
-
-			<div className="ltn__modal-area ltn__quick-view-modal-area">
-				<div className="modal fade" id="quick_view_modal" tabIndex={-1}>
-					<div className="modal-dialog modal-lg" role="document">
-					<div className="modal-content">
-						<div className="modal-header">
-						<button type="button" className="close" data-bs-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">×</span>
-							{/* <i class="fas fa-times"></i> */}
-						</button>
-						</div>
-						<div className="modal-body">
-						<div className="ltn__quick-view-modal-inner">
-							<div className="modal-product-item">
-							<div className="row">
-								<div className="col-lg-6 col-12">
-								<div className="modal-product-img">
-									<img src={publicUrl+"assets/img/product/4.png"} alt="#" />
-								</div>
-								</div>
-								<div className="col-lg-6 col-12">
-								<div className="modal-product-info">
-									<div className="product-ratting">
-									<ul>
-										<li><a href="#"><i className="fas fa-star" /></a></li>
-										<li><a href="#"><i className="fas fa-star" /></a></li>
-										<li><a href="#"><i className="fas fa-star" /></a></li>
-										<li><a href="#"><i className="fas fa-star-half-alt" /></a></li>
-										<li><a href="#"><i className="far fa-star" /></a></li>
-										<li className="review-total"> <a href="#"> ( 95 Reviews )</a></li>
-									</ul>
-									</div>
-									<h3>Brake Conversion Kit</h3>
-									<div className="product-price">
-									<span>$149.00</span>
-									<del>$165.00</del>
-									</div>
-									<div className="modal-product-meta ltn__product-details-menu-1">
-									<ul>
-										<li>
-										<strong>Categories:</strong> 
-										<span className="go-top">
-											<Link to="/blog">Parts</Link>
-											<Link to="/blog">Car</Link>
-											<Link to="/blog">Seat</Link>
-											<Link to="/blog">Cover</Link>
-										</span>
-										</li>
-									</ul>
-									</div>
-									<div className="ltn__product-details-menu-2">
-									<ul>
-										<li>
-										<div className="cart-plus-minus">
-											<input type="text" defaultValue="02" name="qtybutton" className="cart-plus-minus-box" />
-										</div>
-										</li>
-										<li>
-										<a href="#" className="theme-btn-1 btn btn-effect-1" title="Add to Cart" data-bs-toggle="modal" data-bs-target="#add_to_cart_modal">
-											<i className="fas fa-shopping-cart" />
-											<span>ADD TO CART</span>
-										</a>
-										</li>
-									</ul>
-									</div>
-									<hr />
-									<div className="ltn__social-media">
-									<ul>
-										<li>Share:</li>
-										<li><a href="#" title="Facebook"><i className="fab fa-facebook-f" /></a></li>
-										<li><a href="#" title="Twitter"><i className="fab fa-twitter" /></a></li>
-										<li><a href="#" title="Linkedin"><i className="fab fa-linkedin" /></a></li>
-										<li><a href="#" title="Instagram"><i className="fab fa-instagram" /></a></li>
-									</ul>
-									</div>
-								</div>
-								</div>
-							</div>
-							</div>
-						</div>
-						</div>
-					</div>
-					</div>
-				</div>
-			</div>
-
-			<div className="ltn__modal-area ltn__add-to-cart-modal-area">
-				<div className="modal fade" id="add_to_cart_modal" tabIndex={-1}>
-					<div className="modal-dialog modal-md" role="document">
-					<div className="modal-content">
-						<div className="modal-header">
-						<button type="button" className="close" data-bs-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">×</span>
-						</button>
-						</div>
-						<div className="modal-body">
-						<div className="ltn__quick-view-modal-inner">
-							<div className="modal-product-item">
-							<div className="row">
-								<div className="col-12">
-								<div className="modal-product-img">
-									<img src={publicUrl+"assets/img/product/1.png"} alt="#" />
-								</div>
-								<div className="modal-product-info go-top">
-									<h5 className="go-top"><Link to="/product-details">Brake Conversion Kit</Link></h5>
-									<p className="added-cart"><i className="fa fa-check-circle" />Successfully added to your Cart</p>
-									<div className="btn-wrapper">
-									<Link to="/cart" className="theme-btn-1 btn btn-effect-1">View Cart</Link>
-									<Link to="/checkout" className="theme-btn-2 btn btn-effect-2">Checkout</Link>
-									</div>
-								</div>
-								{/* additional-info */}
-								<div className="additional-info d-none">
-									<p>We want to give you <b>10% discount</b> for your first order, <br />  Use discount code at checkout</p>
-									<div className="payment-method">
-									<img src={publicUrl+"assets/img/icons/payment.png"} alt="#" />
-									</div>
-								</div>
-								</div>
-							</div>
-							</div>
-						</div>
-						</div>
-					</div>
-					</div>
-				</div>
 			</div>
 		   </div>
   );
@@ -696,82 +256,3 @@ const FeaturedItemV1 = () => {
 
 export default FeaturedItemV1;
 
-
-
-
-/* <div className="row">
-            <Carousel itemsToScroll={1} itemsToShow={3}>
-              {itemsShowing.map((property, index) => {
-                return (
-                  <div key={index} className="col-sm-12">
-                    <div className="ltn__product-item ltn__product-item-4 text-center---">
-                      <div className="product-img go-top">
-                        <Link to="/product-details">
-                          <img
-                            src={publicUrl + "assets/img/product-3/1.jpg"}
-                            alt="#"
-                          />
-                        </Link>
-                        <div className="product-badge">
-                          <ul>
-                            <li className="sale-badge bg-green">For {property.saleType}</li>
-                          </ul>
-                        </div>
-                        <div className="product-img-location-gallery">
-                          <div className="product-img-location go-top">
-                            <ul>
-                              <li>
-                                <Link to="/contact">
-                                  <i className="flaticon-pin" /> {property.city}
-                                  {property.address}, {properties.neighborhood}
-                                </Link>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="product-info">
-                        <div className="product-price">
-                          <span>
-                            $ {property.price}
-                          </span>
-                        </div>
-                        <h2 className="product-title go-top">
-                          <Link to="/product-details">
-                            {property.title}
-                          </Link>
-                        </h2>
-                        <div className="product-description">
-                          <p>
-                            Beautiful Huge 1 Family House In Heart Of <br />
-                            Westbury. Newly Renovated With New Wood
-                          </p>
-                        </div>
-                        <ul className="ltn__list-item-2 ltn__list-item-2-before">
-                          <li>
-                            <span>
-                              {property.bedrooms} <i className="flaticon-bed" />
-                            </span>
-                            Bedrooms
-                          </li>
-                          <li>
-                            <span>
-                              {property.bathrooms} <i className="flaticon-clean" />
-                            </span>
-                            Bathrooms
-                          </li>
-                          <li>
-                            <span>
-                              {property.size}
-                              <i className="flaticon-square-shape-design-interface-tool-symbol" />
-                            </span>
-                            Meter
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </Carousel>
-          </div> */
