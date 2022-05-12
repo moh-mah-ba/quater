@@ -1,7 +1,21 @@
 import React from "react";
 
-const Sidebar = (props) => {
-  const { propertyType, setPropertyType, setCatagory, catagory } = props;
+const Sidebar = props => {
+  const { propertyType, setPropertyType, setCatagory, catagory, setFilter } =
+    props;
+
+  const onChangeHandler = e => {
+    // console.log(e.target.value);
+    let targetValueName = e.target.value;
+    console.log(e.target.checked);
+    // setFilter(prevState => {
+    //   return { ...prevState, [e.target.value]: !prevState[e.target.value] };
+    // });
+    setFilter(prevState => {
+      console.log(targetValueName);
+      return { ...prevState, [targetValueName]: !prevState[targetValueName] };
+    });
+  };
   return (
     <div className="col-lg-4  mb-100">
       <aside className="sidebar ltn__shop-sidebar">
@@ -12,17 +26,13 @@ const Sidebar = (props) => {
         {/* Advance Information widget */}
         <div className="widget ltn__menu-widget">
           <h4 className="ltn__widget-title">Property Type</h4>
-          <ul
-            onChange={(e) => {
-              setPropertyType([...propertyType, e.target.value]);
-            }}
-          >
+          <ul onChange={e => onChangeHandler(e)}>
             <li>
               <label className="checkbox-item">
-                House
+                Twin
                 <input
                   type="checkbox"
-                  value={"House"} /* defaultChecked="checked" */
+                  value="Twin" /* defaultChecked="checked" */
                 />
                 <span className="checkmark" />
               </label>
@@ -30,60 +40,36 @@ const Sidebar = (props) => {
             </li>
             <li>
               <label className="checkbox-item">
-                Single Family
-                <input type="checkbox" value={"Single Family"} />
+                Duplex
+                <input type="checkbox" value="Duplexes" />
                 <span className="checkmark" />
               </label>
               {/* <span className="categorey-no">3,610</span> */}
             </li>
             <li>
               <label className="checkbox-item">
-                Apartment
-                <input type="checkbox" value={"Apartment"} />
+                Office
+                <input type="checkbox" value="Office" />
                 <span className="checkmark" />
               </label>
               {/* <span className="categorey-no">2,912</span> */}
             </li>
-            <li>
-              <label className="checkbox-item">
-                Office Villa
-                <input type="checkbox" value={"Office Villa"} />
-                <span className="checkmark" />
-              </label>
-              {/* <span className="categorey-no">2,687</span> */}
-            </li>
-            <li>
-              <label className="checkbox-item">
-                Luxary Home
-                <input type="checkbox" value={"Luxary Home"} />
-                <span className="checkmark" />
-              </label>
-              {/* <span className="categorey-no">1,853</span> */}
-            </li>
-            <li>
-              <label className="checkbox-item">
-                Studio
-                <input type="checkbox" value={"Studio"} />
-                <span className="checkmark" />
-              </label>
-              {/* <span className="categorey-no">893</span> */}
-            </li>
           </ul>
           <hr />
           <h4 className="ltn__widget-title">Choose Area</h4>
-          <ul>
+          <ul onChange={e => onChangeHandler(e)}>
             <li>
-              <label className="checkbox-item">
+              <label className="checkbox-item" htmlFor="Cairo">
                 Cairo
-                <input type="checkbox" defaultChecked="checked" />
+                <input type="checkbox" id="Cairo" value="Cairo" />
                 <span className="checkmark" />
               </label>
-              {/* <span className="categorey-no">3,924</span> */}
             </li>
+
             <li>
               <label className="checkbox-item">
                 Giza
-                <input type="checkbox" />
+                <input type="checkbox" value="Giza" />
                 <span className="checkmark" />
               </label>
               {/* <span className="categorey-no">3,610</span> */}
@@ -91,24 +77,19 @@ const Sidebar = (props) => {
           </ul>
           <hr />
           <h4 className="ltn__widget-title">Catagory</h4>
-          <ul
-            onChange={(e) => {
-              // setCatagory(e.target.value)
-              setCatagory([...catagory, e.target.value]);
-            }}
-          >
+          <ul onChange={e => onChangeHandler(e)}>
             <li>
               <label className="checkbox-item">
-                Selling
-                <input type="checkbox" value={"Sales"} />
+                Medical
+                <input type="checkbox" value="Medical" />
                 <span className="checkmark" />
               </label>
               {/* <span className="categorey-no">2,912</span> */}
             </li>
             <li>
               <label className="checkbox-item">
-                Renting
-                <input type="checkbox" value={"Rentals"} />
+                Commercial
+                <input type="checkbox" value="Commercial" />
                 <span className="checkmark" />
               </label>
               {/* <span className="categorey-no">3,610</span> */}

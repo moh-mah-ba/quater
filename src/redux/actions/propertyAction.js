@@ -14,19 +14,39 @@ import {
   PROPERTY_DELETE_FAIL,
 } from "../constants/propertyconstants";
 
+// export const listProperty = (itemsPerPage, pageNumber) => async (dispatch) => {
+//   try {
+//     const { data } = await api.get(
+//       `/property/?page=${pageNumber}&itemsPerPage=${itemsPerPage}`
+//     );
+//     dispatch({ type: PROPERTY_LIST_SUCCESS, payload: data });
+//   } catch (error) {
+//     dispatch({ type: PROPERTY_LIST_FAIL, payload: error.message });
+//   }
+// };
 
-export const listProperty = (itemsPerPage, pageNumber) => async (dispatch) => {
+/**mine **/
+export const listProperty = (skip, limit, filter, search) => async dispatch => {
   try {
-    const { data } = await api.get(
-      `/property/?page=${pageNumber}&itemsPerPage=${itemsPerPage}`
-    );
-    dispatch({ type: PROPERTY_LIST_SUCCESS, payload: data });
+    let result = await fetch("https://quater-real-state.herokuapp.com/property/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        skip,
+        limit,
+        filter,
+        search,
+      }),
+    });
+    result = await result.json();
+    let data = await result;
+    dispatch({ type: PROPERTY_LIST_SUCCESS, payload: data.result });
   } catch (error) {
     dispatch({ type: PROPERTY_LIST_FAIL, payload: error.message });
   }
 };
 
-export const detailsProperty = (propertyId) => async (dispatch) => {
+export const detailsProperty = propertyId => async dispatch => {
   try {
     const { data } = await api.get(`/property/${propertyId}`);
     dispatch({ type: PROPERTY_DETAILS_SUCCESS, payload: data });
@@ -41,8 +61,7 @@ export const detailsProperty = (propertyId) => async (dispatch) => {
   }
 };
 
-export const searchAction = (search) => async (dispatch) => {
-
+export const searchAction = search => async dispatch => {
   try {
     const { data } = await api.get(`/property/search/${search}`);
     dispatch({ type: PROPERTY_SEARCH_SUCCESS, payload: data });
@@ -55,68 +74,69 @@ export const searchAction = (search) => async (dispatch) => {
   }
 };
 
-
-export const editProperty = (
-  propertyId,
-  title,
-  description,
-  price,
-  typeOfProperty,
-  saleType,
-  saleStatus,
-  imagesList,
-  video,
-  city,
-  address,
-  neighborhood,
-  size,
-  rooms,
-  bedrooms,
-  bathrooms,
-  garages,
-  yearBuilt,
-  available,
-  basement,
-  extraDetails,
-  roofing,
-  floorNumber
-) => async (dispatch) => {
-  try {
-    const { data } = await api.put(`/property/edit-listing/${propertyId}`, {
-      title,
-      description,
-      price,
-      typeOfProperty,
-      saleType,
-      saleStatus,
-      imagesList,
-      video,
-      city,
-      address,
-      neighborhood,
-      size,
-      rooms,
-      bedrooms,
-      bathrooms,
-      garages,
-      yearBuilt,
-      available,
-      basement,
-      extraDetails,
-      roofing,
-      floorNumber
-    });
-    dispatch({ type: PROPERTY_EDIT_SUCCESS, payload: data });
-  } catch (error) {
-    dispatch({
-      type: PROPERTY_EDIT_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+export const editProperty =
+  (
+    propertyId,
+    title,
+    description,
+    price,
+    typeOfProperty,
+    saleType,
+    saleStatus,
+    imagesList,
+    video,
+    city,
+    address,
+    neighborhood,
+    size,
+    rooms,
+    bedrooms,
+    bathrooms,
+    garages,
+    yearBuilt,
+    available,
+    basement,
+    extraDetails,
+    roofing,
+    floorNumber
+  ) =>
+  async dispatch => {
+    try {
+      const { data } = await api.put(`/property/edit-listing/${propertyId}`, {
+        title,
+        description,
+        price,
+        typeOfProperty,
+        saleType,
+        saleStatus,
+        imagesList,
+        video,
+        city,
+        address,
+        neighborhood,
+        size,
+        rooms,
+        bedrooms,
+        bathrooms,
+        garages,
+        yearBuilt,
+        available,
+        basement,
+        extraDetails,
+        roofing,
+        floorNumber,
+      });
+      dispatch({ type: PROPERTY_EDIT_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({
+        type: PROPERTY_EDIT_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const addpropertyAction =
   (
@@ -143,7 +163,7 @@ export const addpropertyAction =
     roofing,
     floorNumber
   ) =>
-  async (dispatch) => {
+  async dispatch => {
     try {
       const { data } = await api.post("/property/addproperty", {
         title,
@@ -178,17 +198,16 @@ export const addpropertyAction =
     }
   };
 
-
-  export const deletePropertAction =(propertyId) => async (dispatch) => {
-    console.log("propertyId" , propertyId)
-    try{
-      const { data } = await api.delete(`/property/delete/${propertyId}`);
-      dispatch({ type: PROPERTY_DELETE_SUCCESS, payload: data });
-      dispatch({ type: PROPERTY_LIST_SUCCESS, payload: data });
-    }catch (error) {
-      dispatch({
-        type: PROPERTY_DELETE_FAIL,
-        payload: error.message,
-      });
-    }
+export const deletePropertAction = propertyId => async dispatch => {
+  console.log("propertyId", propertyId);
+  try {
+    const { data } = await api.delete(`/property/delete/${propertyId}`);
+    dispatch({ type: PROPERTY_DELETE_SUCCESS, payload: data });
+    dispatch({ type: PROPERTY_LIST_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: PROPERTY_DELETE_FAIL,
+      payload: error.message,
+    });
   }
+};

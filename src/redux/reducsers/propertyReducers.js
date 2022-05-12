@@ -11,7 +11,6 @@ import {
 
 export const propertyReducer = (
   state = {
-    allProperties: [],
     properties: [],
     images: [],
     allProducts: [],
@@ -24,8 +23,8 @@ export const propertyReducer = (
 ) => {
   switch (action.type) {
     case PROPERTY_LIST_SUCCESS:
+      // console.log("action.payload" , action.payload);
       return {
-        allProperties: action.payload.allProperties,
         properties: action.payload.properties,
         images: action.payload.images,
         currentItemsPerPage: action.payload.currentItemsPerPage,
@@ -38,10 +37,13 @@ export const propertyReducer = (
   }
 };
 
-export const propertyDetailsReducer = (state = { property: {}, images: [] }, action) => {
+export const propertyDetailsReducer = (
+  state = { property: {}, images: [] },
+  action
+) => {
   switch (action.type) {
     case PROPERTY_DETAILS_SUCCESS:
-      return { property: action.payload , images: action.payload.images};
+      return { property: action.payload, images: action.payload.images };
     case PROPERTY_DETAILS_FAIL:
       return { error: action.payload };
     default:
@@ -49,10 +51,7 @@ export const propertyDetailsReducer = (state = { property: {}, images: [] }, act
   }
 };
 
-export const searchPropertyReducer = (
-  state = { searchList: [] },
-  action
-) => {
+export const searchPropertyReducer = (state = { searchList: [] }, action) => {
   switch (action.type) {
     case PROPERTY_SEARCH_SUCCESS:
       return { searchList: action.payload };

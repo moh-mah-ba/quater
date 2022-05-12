@@ -12,28 +12,87 @@ const ShopGridV1 = () => {
 
   const [pageNumber, setPageNumber] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(6);
+  const [filter, setFilter] = useState({
+    Cairo: false,
+    Giza: false,
+    Medical: false,
+    Commercial: false,
+    Twin: false,
+    Duplexes: false,
+    Office: false,
+  });
+  const [search, setSearch] = useState("");
+  const [doneSearching, setDoneSearching] = useState(false);
+  const [testResult, setTestResult] = useState();
 
   const propertyList = useSelector(state => state.propertyReducer);
-  const { allProperties, error, properties, currentItemsPerPage, totalPages } =
+  const { error, properties, currentItemsPerPage, totalPages } =
     propertyList;
 
   useEffect(() => {
-    dispatch(listProperty(itemsPerPage, pageNumber));
-  }, [dispatch, itemsPerPage, pageNumber /* [properties]*/]);
+    // dispatch(listProperty(itemsPerPage, pageNumber));
+    let isSubscribed = true;
+    if (isSubscribed) {
+      dispatch(
+        listProperty(
+          itemsPerPage * (pageNumber <= 1 ? 0 : pageNumber - 1),
+          itemsPerPage,
+          filter,
+          search
+        )
+      );
+    }
+
+    // const getProperties = async () => {
+    //   console.log("sent");
+    //   let result = await fetch("http://localhost:5000/property/", {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify({
+    //       skip: 0,
+    //       limit: 6,
+    //       filter,
+    //       search,
+    //     }),
+    //   });
+    //   result = await result.json();
+    //   let data = await result;
+    //   setTestResult(data);
+    //   return data;
+    // };
+    // console.log(filter);
+    // getProperties();
+    return () => (isSubscribed = false);
+  }, [
+    dispatch,
+    itemsPerPage,
+    pageNumber,
+    filter,
+    doneSearching /* [properties]*/,
+  ]);
 
   const pages = Array.from(Array(totalPages).keys());
 
-  if (propertyList) {
-    console.log(propertyList);
-  }
+  // if (propertyList) {
+  //   console.log(propertyList);
+  // }
+
+  //   if (testResult) {
+  //     console.log(testResult);
+  //   }
 
   const handleBackButton = () => {
-    setPageNumber(0);
-    navigate(`?page=1&itemsPerPage=${currentItemsPerPage}`);
+    if (pageNumber > 1) {
+      setPageNumber(prevState => prevState - 1);
+      navigate(`?page=${pageNumber}&itemsPerPage=${currentItemsPerPage}`);
+      // console.log(currentItemsPerPage);
+    }
   };
   const handleNextButton = () => {
-    setPageNumber(`${totalPages}`);
-    navigate(`?page=${totalPages}&itemsPerPage=${currentItemsPerPage}`);
+    if (pageNumber < totalPages) {
+      setPageNumber(prevState => prevState + 1);
+      navigate(`?page=${pageNumber}&itemsPerPage=${currentItemsPerPage}`);
+    }
   };
 
   const handleItemsPerPage = e => {
@@ -41,30 +100,26 @@ const ShopGridV1 = () => {
     setPageNumber(1);
   };
 
-  const [search, setSearch] = useState("");
+  //   const searchHandleSubmet = e => {
+  //     e.preventDefault();
+  //     if (search) {
+  //       navigate(`/property/search/${search}`);
+  //       dispatch(searchAction(search));
+  //     } else {
+  //       navigate(`/404`);
+  //     }
+  //   };
 
   const searchHandleSubmet = e => {
     e.preventDefault();
-    if (search) {
-      navigate(`/property/search/${search}`);
-      dispatch(searchAction(search));
-    } else {
-      navigate(`/404`);
-    }
+    setDoneSearching(prevState => !prevState);
+    // setSearch("");
   };
+
   /* Sidebar */
   const [propertyType, setPropertyType] = useState([]);
   const [catagory, setCatagory] = useState([]);
 
-  // console.log("propertyType" , propertyType);
-
-  // useEffect(() => {
-  //   console.log("catagory" , catagory);
-  //   const filfil = properties.filter((property) => property.saleType == catagory)
-  //   console.log("filfil" , filfil)
-  //   console.log("properties" , properties.filter((property) => property.saleType == [catagory[0] || catagory[1]]))
-
-  // }, [catagory])
 
   return (
     <div>
@@ -146,8 +201,7 @@ const ShopGridV1 = () => {
                   <li className="d-inline-block">
                     <div className="showing-product-number text-right">
                       <span>
-                        Showing 1–{itemsPerPage} of{" "}
-                        {allProperties && allProperties?.length} results
+                        Showing 1–{itemsPerPage}
                       </span>
                     </div>
                   </li>
@@ -169,6 +223,7 @@ const ShopGridV1 = () => {
                               name="search"
                               placeholder="Search your keyword..."
                               onChange={e => setSearch(e.target.value)}
+                              value={search}
                             />
                             <button type="submit">
                               <i className="fas fa-search" />
@@ -222,43 +277,46 @@ const ShopGridV1 = () => {
                   </div>
                 </div>
               </div>
-              <div className="ltn__pagination-area text-center">
-                <div className="ltn__pagination">
-                  <ul>
-                    <li onClick={handleBackButton}>
-                      <Link to="#">
-                        <i className="fas fa-angle-double-left" />
-                      </Link>
-                    </li>
-
-                    {pages.map(pageIndex => (
-                      <li
-                        key={pageIndex}
-                        onClick={() => setPageNumber(pageIndex + 1)}
-                      >
-                        <Link
-                          to={`?page=${
-                            pageIndex + 1
-                          }&itemsPerPage=${currentItemsPerPage}`}
-                        >
-                          {pageIndex + 1}
+              {!doneSearching && (
+                <div className="ltn__pagination-area text-center">
+                  <div className="ltn__pagination">
+                    <ul>
+                      <li onClick={handleBackButton}>
+                        <Link to="#">
+                          <i className="fas fa-angle-double-left" />
                         </Link>
                       </li>
-                    ))}
-                    <li onClick={handleNextButton}>
-                      <Link to="#">
-                        <i className="fas fa-angle-double-right" />
-                      </Link>
-                    </li>
-                  </ul>
+
+                      {pages.map(pageIndex => (
+                        <li
+                          key={pageIndex}
+                          onClick={() => setPageNumber(pageIndex + 1)}
+                        >
+                          <Link
+                            to={`?page=${
+                              pageIndex + 1
+                            }&itemsPerPage=${currentItemsPerPage}`}
+                          >
+                            {pageIndex + 1}
+                          </Link>
+                        </li>
+                      ))}
+                      <li onClick={handleNextButton}>
+                        <Link to="#">
+                          <i className="fas fa-angle-double-right" />
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             <Sidebar
               propertyType={propertyType}
               setPropertyType={setPropertyType}
               setCatagory={setCatagory}
               catagory={catagory}
+              setFilter={setFilter}
             />
           </div>
         </div>

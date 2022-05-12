@@ -11,7 +11,7 @@ const MySlider = () => {
   const [clickedImg, setClickedImg] = useState();
 
   useEffect(() => {
-    setFirstImg(images[0]?.secure_url);
+    setFirstImg(images[0]);
   }, [images]);
 
   const prevImgHandler = () => {
@@ -25,7 +25,7 @@ const MySlider = () => {
   const nextImgHandler = () => {
     setFirstImg(prevState =>
       images.indexOf(prevState) >= 3
-        ? images[0]?.secure_url
+        ? images[0]
         : images[images.indexOf(prevState) + 1]
     );
   };
@@ -35,24 +35,38 @@ const MySlider = () => {
     setClickedImg(e.target.src);
   };
 
+  if (images) {
+    // prettier-ignore
+    console.log(images[0]&&images[0]["secure_url"]);
+  }
+
   return (
     <>
       <div className={classes.container}>
         {images.indexOf(firstImg) > 0 && (
           <span className={classes["left-arrow"]} onClick={prevImgHandler}>
-            &#60;
+            <i class="fa-solid fa-arrow-left"></i>
           </span>
         )}
         <div onClick={showModalHandler} className={classes.wrapper}>
           <div className={classes.first}>
-            <img src={firstImg} alt="image" />
+            <img src={firstImg && firstImg["secure_url"]} alt="image" />
           </div>
           <div className={classes.middle}>
-            <img src={images[images.indexOf(firstImg) + 1]} alt="image" />
+            <img
+              src={
+                firstImg && images[images.indexOf(firstImg) + 1]["secure_url"]
+              }
+              alt="image"
+            />
           </div>
           <div className={classes.last}>
             <img
-              src={images[images.indexOf(firstImg) + 2] || images[0]?.secure_url}
+              src={
+                (images[images.indexOf(firstImg) + 2] &&
+                  images[images.indexOf(firstImg) + 2]["secure_url"]) ||
+                (images[0] && images[0]["secure_url"])
+              }
               alt="image"
             />
           </div>
@@ -60,7 +74,7 @@ const MySlider = () => {
 
         {images.indexOf(firstImg) <= 5 && (
           <span className={classes["right-arrow"]} onClick={nextImgHandler}>
-            &#62;
+            <i class="fa-solid fa-arrow-right"></i>
           </span>
         )}
       </div>

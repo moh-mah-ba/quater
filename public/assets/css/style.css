@@ -14559,19 +14559,19 @@ input.cart-plus-minus-box {
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
-.checkbox-item .checkmark:after {
+.checkbox-item .checkmark::after{
   position: absolute;
   content: "";
   display: none;
 }
 
 /* Show the checkmark when checked */
-.checkbox-item input:checked ~ .checkmark:after {
+.checkbox-item input:checked ~ .checkmark::after {
   display: block;
 }
 
 /* Style the checkmark/indicator */
-.checkbox-item .checkmark:after {
+.checkbox-item .checkmark::after {
   left: 4px;
   top: 0px;
   width: 5px;
